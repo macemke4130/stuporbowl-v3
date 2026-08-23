@@ -1,0 +1,47 @@
+---
+
+---
+
+<div id="private-route" data-user-is-authorized="false">
+  <slot />
+</div>
+
+<style>
+  [data-user-is-authorized="false"] {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  const privateRouteElement = document.querySelector("#private-route");
+
+  const validateToken = async () => {
+    return await api("admin/validate-jwt", "POST", { token: localStorage.getItem("token") });
+  };
+
+  const checkPermissions = (permissions) => {
+    const rules = permissions.split("").map((rule) => (rule === "1" ? true : false));
+
+    if (rules[0]) {
+      // Has all permissions. No need to check further.
+      privateRouteElement.setAttribute("data-is-admin", "true");
+      return;
+    }
+
+    if (rules[1]) privateRouteElement.setAttribute("data-is-organizer", "true");
+  };
+
+  (async () => {
+    const tokenIsValid = await validateToken();
+
+    if (!tokenIsValid) {
+      localStorage.clear();
+      window.location.replace("/login");
+      return;
+    }
+
+    privateRouteElement.setAttribute("data-user-is-authorized", "true");
+
+    checkPermissions(localStorage.getItem("permissions"));
+  })();
+</script>

@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <form id="login-form">
+    <label for="email">Email</label>
+    <input id="email" type="email" inputmode="email" value="lucasmace4130@gmail.com" />
+    <label for="password">Password</label>
+    <input id="password" type="password" value="password" />
+    <button id="login-button" type="submit">Submit</button>
+  </form>
+</Layout>
+
+<script is:inline>
+  const loginForm = document.querySelector("#login-form");
+  const loginButton = document.querySelector("#login-button");
+
+  const loginAttempt = async (email, password) => {
+    return await api("admin/login-attempt", "POST", { email, password });
+  };
+
+  const handleFormSubmit = async (event) => {
+    // Prevent HTTP request.
+    event.preventDefault();
+
+    loginButton.textContent = "Loading...";
+    loginButton.setAttribute("disabled", "");
+
+    const login = await loginAttempt(document.querySelector("#email").value, document.querySelector("#password").value);
+
+    console.log(login);
+
+    if (login.data === null) {
+      loginButton.textContent = "Submit";
+      loginButton.removeAttribute("disabled");
+      showLoginFailure();
+      return;
+    }
+
+    localStorage.setItem("id", login.data.id);
+    localStorage.setItem("token", login.data.token);
+    localStorage.setItem("displayName", login.data.displayName);
+    localStorage.setItem("email", login.data.email);
+    localStorage.setItem("permissions", login.data.permissions);
+    window.location.href = "/admin/dashboard";
+  };
+
+  loginForm.addEventListener("submit", handleFormSubmit);
+</script>

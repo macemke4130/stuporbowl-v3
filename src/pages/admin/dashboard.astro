@@ -1,0 +1,18 @@
+---
+import PrivateRoute from "../../components/privateRoute.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout>
+  <PrivateRoute>
+    <h1>Stupor Bowl Dashboard</h1>
+    <div role="list">
+      <div role="listitem">
+        <a href="/admin/new-post">New Post</a>
+      </div>
+      <div role="listitem">
+        <a href="/admin/new-user">New User</a>
+      </div>
+    </div>
+  </PrivateRoute>
+</Layout>

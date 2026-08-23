@@ -6,7 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "concurrently -k -n astro,express -c cyan,yellow \"astro dev\" \"nodemon server.js\"",
+    "dev": "concurrently -k -n astro,express -c cyan,yellow \"astro dev\" \"nodemon --watch server.js --watch server/ server.js\"",
     "build": "astro build",
     "preview": "astro preview",
     "start": "node server.js",
@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "astro": "^7.2.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.23.2"
   },
   "devDependencies": {

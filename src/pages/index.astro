@@ -1,11 +1,41 @@
 ---
-import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-  <h1>Stuporbowl</h1>
+  <section aria-labelledby="posts-title">
+    <h1 id="posts-title">Latest News</h1>
+    <div id="posts-container">Loading news...</div>
+  </section>
 </Layout>
+
+<script is:inline>
+  const getPosts = async () => {
+    return await api("posts");
+  };
+
+  const buildPosts = (posts) => {
+    const postsContainer = document.querySelector("#posts-container");
+    postsContainer.innerText = "";
+
+    for (const post of posts) {
+      const articleElement = document.createElement("article");
+      articleElement.innerHTML = `
+        <h2>${post.title}</h2>
+        <address>Posted by ${post.display_name}</address>
+        <time>${post.datePosted}</time>
+        <div class="post-content">
+          ${post.content}
+        </div>
+      `;
+
+      postsContainer.appendChild(articleElement);
+    }
+  };
+
+  (async () => {
+    const allPosts = await getPosts();
+    console.log(allPosts);
+    buildPosts(allPosts);
+  })();
+</script>
