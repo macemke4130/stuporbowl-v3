@@ -69,7 +69,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", environment: process.env.NODE_ENV || "development" });
 });
 
-app.get("/api/db", async (req, res) => {
+app.get("/api/racers/2026", async (req, res) => {
   const sql = await query(`SELECT * FROM year2026;`);
   res.json(sql);
 });
@@ -98,6 +98,17 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "dist", "index.html"));
   });
 }
+
+app.get("/api/post/:id", async (req, res) => {
+  const postId = req.params.id;
+
+  const sql = await query(
+    `select posts.date_created, posts.title, posts.content, posts.posted_by from posts join users on posts.posted_by = users.id where posts.id = ?`,
+    postId,
+  );
+
+  res.json(sql[0]);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -1,0 +1,35 @@
+---
+import PrivateRoute from "../../components/privateRoute.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout>
+  <PrivateRoute>
+    <form id="edit-post">
+      <label for="post-title">Title</label>
+      <input id="post-title" type="text" />
+      <label for="post-content">Content</label>
+      <textarea id="post-content"></textarea>
+      <button id="edit-post-button" type="submit">Submit</button>
+    </form>
+  </PrivateRoute>
+</Layout>
+
+<script is:inline>
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+  const postId = params.get("id");
+
+  const getPost = async (postId) => {
+    return await api(`post/${postId}`);
+  };
+
+  const fillForm = (post) => {
+    console.log(post);
+  };
+
+  (async () => {
+    const postContent = await getPost(postId);
+    fillForm(postContent);
+  })();
+</script>

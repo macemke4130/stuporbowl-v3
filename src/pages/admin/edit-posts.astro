@@ -1,0 +1,39 @@
+---
+import PrivateRoute from "../../components/privateRoute.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout>
+  <PrivateRoute>
+    <div id="posts-container"></div>
+  </PrivateRoute>
+</Layout>
+
+<script is:inline>
+  const getPosts = async () => {
+    return await api("posts");
+  };
+
+  const buildPosts = (posts) => {
+    const postsContainer = document.querySelector("#posts-container");
+    postsContainer.innerText = "";
+
+    for (const post of posts) {
+      const articleElement = document.createElement("article");
+      articleElement.innerHTML = `
+        <h2>${post.title}</h2>
+        <div class="controls">
+            <a id="edit-post-button" href="/admin/edit-post?id=${post.id}">Edit</a>
+            <button id="delete-post-button" data-post-id="${post.id}">Delete</button>
+        </div>
+      `;
+
+      postsContainer.appendChild(articleElement);
+    }
+  };
+
+  (async () => {
+    const allPosts = await getPosts();
+    buildPosts(allPosts);
+  })();
+</script>

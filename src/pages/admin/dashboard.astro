@@ -5,14 +5,32 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout>
   <PrivateRoute>
-    <h1>Stupor Bowl Dashboard</h1>
-    <div role="list">
-      <div role="listitem">
-        <a href="/admin/new-post">New Post</a>
-      </div>
-      <div role="listitem">
-        <a href="/admin/new-user">New User</a>
-      </div>
-    </div>
+    <h1>Stupor Bowl Admin Dashboard</h1>
+    <nav>
+      <ul>
+        <li>
+          Posts
+          <ul>
+            <li>
+              <a href="/admin/new-post">New</a>
+            </li>
+            <li>
+              <a href="/admin/edit-posts">Edit</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          Users
+          <ul>
+            <li>
+              <a href="/admin/new-user">New</a>
+            </li>
+            <li>
+              <a href="/admin/edit-user">Edit</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
   </PrivateRoute>
 </Layout>
