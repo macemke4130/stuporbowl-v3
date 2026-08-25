@@ -91,6 +91,16 @@ router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
   }
 });
 
+router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
+  // Validate permissions
+
+  const { postId, title, content } = req.body;
+
+  const sql = await query(`UPDATE posts SET title = ?, content = ? WHERE id = ?`, [title, content, postId]);
+
+  res.json(sql);
+});
+
 router.post(`${apiRoute}/admin/new-post`, async (req, res) => {
   // Validate permissions
 

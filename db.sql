@@ -34,6 +34,7 @@ INSERT INTO posts (id, posted_by, title, content) VALUES (1, 1, "Hello, World!",
 select 
 posts.id,
 posts.date_created,
+posts.title,
 posts.content,
-users.full_name
+users.full_name as posted_by
  from posts join users on posts.posted_by = users.id;

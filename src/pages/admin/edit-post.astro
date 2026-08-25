@@ -20,13 +20,36 @@ import Layout from "../../layouts/Layout.astro";
   const params = url.searchParams;
   const postId = params.get("id");
 
+  const titleElement = document.querySelector("#post-title");
+  const contentElement = document.querySelector("#post-content");
+  const editForm = document.querySelector("#edit-post");
+
   const getPost = async (postId) => {
     return await api(`post/${postId}`);
   };
 
-  const fillForm = (post) => {
-    console.log(post);
+  const updatePost = async (postId) => {
+    const request = api("admin/edit-post", "POST", {
+      title: titleElement.value,
+      content: contentElement.value,
+      postId,
+    });
+
+    console.log(request);
   };
+
+  const fillForm = (post) => {
+    titleElement.value = post.title;
+    contentElement.value = post.content;
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    updatePost(postId);
+  };
+
+  editForm.addEventListener("submit", handleFormSubmit);
 
   (async () => {
     const postContent = await getPost(postId);
