@@ -11,7 +11,7 @@
 
       const api = async (apiPath, method = "GET", body) => {
         try {
-          const headers = { "Content-Type": "application/json", Accept: "application/json" };
+          const headers = { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json", Accept: "application/json" };
           const request = await fetch(`${env}/api/${apiPath}`, {
             method,
             headers,

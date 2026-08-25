@@ -91,6 +91,18 @@ router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
   }
 });
 
+const validateRequest = (token, actions) => {
+  token = token.split("Bearer ")[1];
+
+  const tokenIsValid = validateJWT(token);
+
+  if (tokenIsValid === false) {
+    return false;
+  }
+
+  // check individual permissions
+};
+
 router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
   // Validate permissions
 
@@ -102,7 +114,7 @@ router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
 });
 
 router.post(`${apiRoute}/admin/new-post`, async (req, res) => {
-  // Validate permissions
+  const valid = validateRequest(req.headers.authorization, ["new-post"]);
 
   const data = prepData(req.body);
 
