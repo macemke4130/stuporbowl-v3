@@ -15,6 +15,41 @@ const unauthorizedResponse = {
   data: null,
 };
 
+const permissionList = ["is-admin", "new-post", "edit-post", "delete-post", "new-user", "edit-user", "delete-user", "read-racer", "edit-racer"];
+
+const validateJWT = async (tokenFromClient) => {
+  return await jwt.verify(tokenFromClient, privateKey, function (err, decoded) {
+    return err ? false : true;
+  });
+};
+
+const validateRequest = (token, actions) => {
+  token = token.split("Bearer ")[1];
+
+  const tokenIsValid = validateJWT(token);
+
+  if (tokenIsValid === false) {
+    return false;
+  }
+
+  const decodedPayload = jwt.decode(token);
+  const userPermissions = decodedPayload.permissions.split("").map((str) => Number(str));
+
+  const isAdmin = !!userPermissions[0];
+  if (isAdmin) return true;
+
+  return actions.every((action) => {
+    const actionIndex = permissionList.indexOf(action);
+
+    if (actionIndex === -1) {
+      throw new Error("Action not found in [permissionList]");
+      return false;
+    }
+
+    return userPermissions[actionIndex] === 1;
+  });
+};
+
 const router = express.Router();
 
 router.post(`${apiRoute}/admin/login-attempt`, async (req, res) => {
@@ -46,32 +81,23 @@ router.post(`${apiRoute}/admin/login-attempt`, async (req, res) => {
         },
       });
     } else {
-      res.json({
-        message: "Unauthorized",
-        status: 401,
-        data: null,
-      });
+      res.json(unauthorizedResponse);
     }
   } catch (error) {
-    res.json({
-      message: "Unauthorized",
-      status: 401,
-      data: null,
-    });
+    res.json(unauthorizedResponse);
   }
 });
 
 router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
+  const valid = validateRequest(req.headers.authorization, ["new-user"]);
+
+  if (!valid) {
+    res.json(unauthorizedResponse);
+    return;
+  }
+
   try {
     const { email, password, fullName, permissions } = req.body;
-
-    // Check permissions.
-
-    // const authorized = await validateJWT(jwt);
-
-    // if (authorized.data == false) {
-    //   res.json({ message: "Unauthorized", status: 401, data: null });
-    // }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -97,35 +123,6 @@ router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
   }
 });
 
-const permissionList = ["is-admin", "new-post", "edit-post", "delete-post", "new-user", "edit-user", "delete-user", "read-racer", "edit-racer"];
-
-const validateRequest = (token, actions) => {
-  token = token.split("Bearer ")[1];
-
-  const tokenIsValid = validateJWT(token);
-
-  if (tokenIsValid === false) {
-    return false;
-  }
-
-  const decodedPayload = jwt.decode(token);
-  const userPermissions = decodedPayload.permissions.split("").map((str) => Number(str));
-
-  const isAdmin = !!userPermissions[0];
-  if (isAdmin) return true;
-
-  return actions.every((action) => {
-    const actionIndex = permissionList.indexOf(action);
-
-    if (actionIndex === -1) {
-      throw new Error("Action not found in [permissionList]");
-      return false;
-    }
-
-    return userPermissions[actionIndex] === 1;
-  });
-};
-
 router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
   const valid = validateRequest(req.headers.authorization, ["edit-post"]);
 
@@ -134,11 +131,21 @@ router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
     return;
   }
 
-  const { postId, title, content } = req.body;
+  try {
+    const { postId, title, content } = req.body;
 
-  const sql = await query(`UPDATE posts SET title = ?, content = ? WHERE id = ?`, [title, content, postId]);
+    const sql = await query(`UPDATE posts SET title = ?, content = ? WHERE id = ?`, [title, content, postId]);
 
-  res.json(sql);
+    res.json(sql);
+  } catch (error) {
+    const response = {
+      message: error.sqlMessage,
+      status: error.errno,
+      data: null,
+    };
+
+    res.json(response);
+  }
 });
 
 router.post(`${apiRoute}/admin/new-post`, async (req, res) => {
@@ -149,18 +156,22 @@ router.post(`${apiRoute}/admin/new-post`, async (req, res) => {
     return;
   }
 
-  const data = prepData(req.body);
+  try {
+    const data = prepData(req.body);
 
-  const sql = await query(`INSERT INTO posts (${data.columns}) VALUES (${data.marks})`, data.values);
+    const sql = await query(`INSERT INTO posts (${data.columns}) VALUES (${data.marks})`, data.values);
 
-  res.json(sql);
+    res.json(sql);
+  } catch (error) {
+    const response = {
+      message: error.sqlMessage,
+      status: error.errno,
+      data: null,
+    };
+
+    res.json(response);
+  }
 });
-
-const validateJWT = async (tokenFromClient) => {
-  return await jwt.verify(tokenFromClient, privateKey, function (err, decoded) {
-    return err ? false : true;
-  });
-};
 
 router.post(`${apiRoute}/admin/validate-jwt`, async (req, res) => {
   const tokenFromClient = req.body.token;

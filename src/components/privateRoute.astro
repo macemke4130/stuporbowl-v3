@@ -41,6 +41,7 @@
     }
 
     privateRouteElement.setAttribute("data-user-is-authorized", "true");
+    document.documentElement.setAttribute("data-user-logged-in", "true");
 
     checkPermissions(localStorage.getItem("permissions"));
   })();

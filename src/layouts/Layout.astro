@@ -31,8 +31,11 @@
       <div id="site-title">Stupor Bowl</div>
       <nav>
         <div role="list">
-          <div role="listitem">
+          <div role="listitem" class="logged-out-only">
             <a href="/login">Admin Login</a>
+          </div>
+          <div role="listitem" class="logged-in-only">
+            <button id="logout-button" class="link">Logout</button>
           </div>
         </div>
       </nav>
@@ -267,6 +270,16 @@
     }
   }
 
+  button.link {
+    text-decoration: underline;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background-color: transparent;
+    block-size: fit-content;
+  }
+
   @layer utilities {
     .flex {
       display: flex;
@@ -293,6 +306,20 @@
       white-space: nowrap;
       position: absolute;
       overflow: hidden;
+    }
+
+    .logged-in-only {
+      display: none;
+    }
+
+    html[data-user-logged-in="true"] {
+      .logged-in-only {
+        display: block;
+      }
+
+      .logged-out-only {
+        display: none;
+      }
     }
   }
 
@@ -321,3 +348,14 @@
   @media (min-inline-size: 1440px) {
   }
 </style>
+
+<script is:inline>
+  const logoutButton = document.querySelector("#logout-button");
+
+  const logUserOut = () => {
+    localStorage.clear();
+    window.location = "/";
+  };
+
+  logoutButton.addEventListener("click", logUserOut);
+</script>
