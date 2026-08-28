@@ -29,13 +29,15 @@ import Layout from "../../layouts/Layout.astro";
   };
 
   const updatePost = async (postId) => {
-    const request = api("admin/edit-post", "POST", {
+    const request = await api("admin/edit-post", "POST", {
       title: titleElement.value,
       content: contentElement.value,
       postId,
     });
 
-    console.log(request);
+    if (request.status === 401) {
+      showMessage("unauthorized");
+    }
   };
 
   const fillForm = (post) => {

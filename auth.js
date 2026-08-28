@@ -9,6 +9,12 @@ const privateKey = config.keys.jwt;
 
 const saltRounds = 10;
 
+const unauthorizedResponse = {
+  message: "Unauthorized",
+  status: 401,
+  data: null,
+};
+
 const router = express.Router();
 
 router.post(`${apiRoute}/admin/login-attempt`, async (req, res) => {
@@ -91,6 +97,8 @@ router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
   }
 });
 
+const permissionList = ["is-admin", "new-post", "edit-post", "delete-post", "new-user", "edit-user", "delete-user", "read-racer", "edit-racer"];
+
 const validateRequest = (token, actions) => {
   token = token.split("Bearer ")[1];
 
@@ -100,11 +108,31 @@ const validateRequest = (token, actions) => {
     return false;
   }
 
-  // check individual permissions
+  const decodedPayload = jwt.decode(token);
+  const userPermissions = decodedPayload.permissions.split("").map((str) => Number(str));
+
+  const isAdmin = !!userPermissions[0];
+  if (isAdmin) return true;
+
+  return actions.every((action) => {
+    const actionIndex = permissionList.indexOf(action);
+
+    if (actionIndex === -1) {
+      throw new Error("Action not found in [permissionList]");
+      return false;
+    }
+
+    return userPermissions[actionIndex] === 1;
+  });
 };
 
 router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
-  // Validate permissions
+  const valid = validateRequest(req.headers.authorization, ["edit-post"]);
+
+  if (!valid) {
+    res.json(unauthorizedResponse);
+    return;
+  }
 
   const { postId, title, content } = req.body;
 
@@ -115,6 +143,11 @@ router.post(`${apiRoute}/admin/edit-post`, async (req, res) => {
 
 router.post(`${apiRoute}/admin/new-post`, async (req, res) => {
   const valid = validateRequest(req.headers.authorization, ["new-post"]);
+
+  if (!valid) {
+    res.json(unauthorizedResponse);
+    return;
+  }
 
   const data = prepData(req.body);
 
@@ -134,5 +167,10 @@ router.post(`${apiRoute}/admin/validate-jwt`, async (req, res) => {
   const isValidToken = await validateJWT(tokenFromClient);
   res.json(isValidToken);
 });
+
+(async () => {
+  const hashedPassword = await bcrypt.hash("test1", saltRounds);
+  // console.log(hashedPassword);
+})();
 
 export default router;

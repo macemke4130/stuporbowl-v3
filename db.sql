@@ -19,6 +19,12 @@ INSERT INTO users (full_name, email, password, permissions) VALUES (
 "password", "1000000000000000"
 );
 
+INSERT INTO users (full_name, email, password, permissions) VALUES (
+"Test 1",
+"test1@gmail.com", 
+"test1", "0100000100000000"
+);
+
 CREATE TABLE posts (
   id INT PRIMARY KEY AUTO_INCREMENT,
   date_created TIMESTAMP DEFAULT NOW(),
