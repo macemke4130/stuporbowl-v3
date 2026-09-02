@@ -29,13 +29,16 @@
   <body>
     <header>
       <div id="site-title">Stupor Bowl</div>
-      <nav>
+      <nav id="site-nav" aria-label="Main">
         <div role="list">
           <div role="listitem" class="logged-out-only">
             <a href="/login">Admin Login</a>
           </div>
           <div role="listitem" class="logged-in-only">
             <button id="logout-button" class="link">Logout</button>
+          </div>
+          <div role="listitem" class="logged-in-only">
+            <a href="/admin/dashboard">Dashboard</a>
           </div>
         </div>
       </nav>
@@ -57,6 +60,7 @@
     --site-max-inline-size: 99.2rem;
     --standard-spacing: 6rem;
     --round: 0.5rem;
+    --min-button-size: 2.4rem;
 
     --header-block-size: 5rem;
     --footer-block-size: 6rem;
@@ -99,8 +103,8 @@
 
     :where(button) {
       font-family: inherit;
-      min-block-size: 2.4rem;
-      min-inline-size: 2.4rem;
+      min-block-size: var(--min-button-size);
+      min-inline-size: var(--min-button-size);
     }
 
     :where(h1, h2, h3, h4, h5, h6) {
@@ -249,6 +253,27 @@
   @layer components {
     sb-hero {
       block-size: 50rem;
+    }
+
+    #site-nav {
+      & > [role="list"] {
+        display: flex;
+        /* align-items: center; */
+        gap: 1rem;
+        padding-inline: 0.25rem;
+
+        a {
+          display: block;
+          min-block-size: var(--min-button-size);
+          padding-block: 1rem;
+        }
+
+        :is(button, a) {
+          outline: 1px solid red;
+          border-radius: 0;
+          padding-block: 0.5rem;
+        }
+      }
     }
 
     a.button {
