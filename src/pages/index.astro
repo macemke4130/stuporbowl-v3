@@ -1,12 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import TextHero from "../components/TextHero.astro";
 ---
 
 <Layout>
-  <section aria-labelledby="posts-title">
+  <TextHero>
+    <div class="h1">
+      <h1>Stupor Bowl</h1><wbr />
+      <span> 28</span>
+    </div>
+    <h2><time datetime="2027-02-13">Saturday, February 13th 2027</time></h2>
+    <div class="location">Minneapolis, Minnesota</div>
+  </TextHero>
+  <!-- <section aria-labelledby="posts-title">
     <h1 id="posts-title">Latest News</h1>
     <div id="posts-container">Loading news...</div>
-  </section>
+  </section> -->
 </Layout>
 
 <style is:inline>
@@ -19,6 +28,34 @@ import Layout from "../layouts/Layout.astro";
         font-size: 1.25rem;
       }
     }
+  }
+
+  .text-hero {
+    align-content: center;
+    block-size: 100%;
+
+    time {
+      font-size: clamp(1.25rem, 6vw, 2.5rem);
+    }
+
+    .location {
+      font-size: clamp(1.25rem, 4vw, 2.25rem);
+    }
+  }
+
+  .h1 {
+    font-size: clamp(1rem, 12vw, 4rem);
+    font-weight: bold;
+
+    h1 {
+      font-size: inherit;
+      display: inline-block;
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: normal;
   }
 </style>
 
