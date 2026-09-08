@@ -39,9 +39,11 @@ import SiteNavigation from "../components/SiteNavigation.astro";
         </div>
       </nav>
       <nav id="desktop-navigation" aria-label="Main">
-        <div role="list"></div>
+        <div role="list">
+          <SiteNavigation />
+        </div>
       </nav>
-      <button id="site-hamburger"> Menu </button>
+      <button id="site-hamburger">≡</button>
     </header>
     <main>
       <slot />
@@ -268,11 +270,30 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       }
     }
 
+    #mobile-navigation {
+      display: none;
+    }
+
+    #mobile-navigation[data-expanded="true"] {
+      display: block;
+    }
+
     #mobile-navigation,
     #site-hamburger {
       @media (min-width: 992px) {
         display: none;
       }
+    }
+
+    #site-hamburger {
+      inline-size: 3rem;
+      block-size: 3rem;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      inset-inline-end: 1rem;
+      inset-block: 50%;
+      align-self: center;
     }
 
     #site-title {
@@ -290,12 +311,17 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     }
 
     header {
-      display: grid;
-      grid-template-columns: 20% 1fr;
-      padding-inline: 1rem;
-      margin-inline: auto;
-      inline-size: 100%;
-      max-inline-size: var(--site-max-inline-size);
+      position: relative;
+      align-content: center;
+
+      @media (min-width: 992px) {
+        display: grid;
+        grid-template-columns: 20% 1fr;
+        padding-inline: 1rem;
+        margin-inline: auto;
+        inline-size: 100%;
+        max-inline-size: var(--site-max-inline-size);
+      }
     }
 
     a.button {
