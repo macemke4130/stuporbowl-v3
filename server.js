@@ -103,8 +103,7 @@ app.get("/api/post/:id", async (req, res) => {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("dist"));
 
-  // Catch-all route to serve Astro index page for non-API routes
-  app.get("*", (req, res) => {
+  app.get("/{*path}", (req, res) => {
     res.sendFile(path.resolve(__dirname, "dist", "index.html"));
   });
 }
