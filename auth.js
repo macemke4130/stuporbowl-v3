@@ -89,12 +89,12 @@ router.post(`${apiRoute}/admin/login-attempt`, async (req, res) => {
 });
 
 router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
-  const valid = validateRequest(req.headers.authorization, ["new-user"]);
+  // const valid = validateRequest(req.headers.authorization, ["new-user"]);
 
-  if (!valid) {
-    res.json(unauthorizedResponse);
-    return;
-  }
+  // if (!valid) {
+  //   res.json(unauthorizedResponse);
+  //   return;
+  // }
 
   try {
     const { email, password, fullName, permissions } = req.body;
