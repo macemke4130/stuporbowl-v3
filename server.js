@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import { query, apiRoute, prepData } from "./dbConnect.js";
+import { query } from "./dbConnect.js";
 import auth from "./auth.js";
 
 const PORT = process.env.PORT || 3001;
@@ -89,16 +89,6 @@ app.get("/api/posts", async (req, res) => {
   res.json(postsWithFormattedDates);
 });
 
-// 2. Production Only: Serve Astro's built static files
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("dist"));
-
-  // Catch-all route to serve Astro index page for non-API routes
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-  });
-}
-
 app.get("/api/post/:id", async (req, res) => {
   const postId = req.params.id;
 
@@ -109,6 +99,15 @@ app.get("/api/post/:id", async (req, res) => {
 
   res.json(sql[0]);
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("dist"));
+
+  // Catch-all route to serve Astro index page for non-API routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
