@@ -101,9 +101,9 @@ router.post(`${apiRoute}/admin/new-user`, async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const sql = await query(
-      `INSERT INTO users (full_name, email, password, permissions) VALUES ("${fullName}", "${email}", "${hashedPassword}", "${permissions}");`,
-    );
+    const data = prepData({ email, password: hashedPassword, full_name: fullName, permissions });
+
+    const sql = await query(`INSERT INTO users (full_name, email, password, permissions) VALUES (${data.marks})`, data.values);
 
     const response = {
       message: "Successfully created new user.",
