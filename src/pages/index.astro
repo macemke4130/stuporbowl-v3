@@ -12,10 +12,10 @@ import TextHero from "../components/TextHero.astro";
     <h2><time datetime="2027-02-13">Saturday, February 13th 2027</time></h2>
     <div class="location">Minneapolis, Minnesota</div>
   </TextHero>
-  <!-- <section aria-labelledby="posts-title">
+  <section aria-labelledby="posts-title">
     <h1 id="posts-title">Latest News</h1>
     <div id="posts-container">Loading news...</div>
-  </section> -->
+  </section>
 </Layout>
 
 <style is:inline>
@@ -31,9 +31,6 @@ import TextHero from "../components/TextHero.astro";
   }
 
   .text-hero {
-    align-content: center;
-    block-size: 100%;
-
     time {
       font-size: clamp(1.25rem, 6vw, 2.5rem);
     }
