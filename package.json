@@ -8,9 +8,11 @@
   "scripts": {
     "dev": "concurrently -k -n astro,express -c cyan,yellow \"astro dev --host\" \"nodemon --watch server.js --watch server/ server.js\"",
     "build": "astro build",
+    "heroku-postbuild": "npm run build",
     "preview": "astro preview",
     "start": "node server.js",
-    "astro": "astro"
+    "astro": "astro",
+    "cors": "^2.8.6"
   },
   "dependencies": {
     "astro": "^7.2.0",
@@ -21,7 +23,6 @@
   },
   "devDependencies": {
     "concurrently": "^10.0.4",
-    "cors": "^2.8.6",
     "nodemon": "^3.1.14"
   }
 }
