@@ -44,7 +44,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
             <SiteNavigation />
           </div>
         </nav>
-        <button id="site-hamburger" aria-label="Navigation" aria-expanded="false" aria-controls="mobile-navigation">≡</button>
+        <button id="site-hamburger" aria-label="Navigation" aria-expanded="false" aria-controls="mobile-navigation">
+          <span id="hamburger-closed" aria-hidden="true">≡</span>
+          <span id="hamburger-open" aria-hidden="true">×</span>
+        </button>
       </div>
     </header>
     <main>
@@ -279,9 +282,22 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     #mobile-navigation[data-expanded="true"] {
       display: block;
       position: absolute;
-      outline: 1px solid red;
       inset-inline: 0;
       inset-block-start: var(--header-block-size);
+      background-color: var(--primary-button-color);
+      padding-inline: 0.5rem;
+      padding-block: 1rem;
+
+      [role="list"] {
+        [role="listitem"] {
+          a {
+            display: block;
+            font-size: 1.5rem;
+            padding-block: 0.5rem;
+            letter-spacing: 0.7px;
+          }
+        }
+      }
     }
 
     #mobile-navigation[data-expanded="true"] {
@@ -305,6 +321,18 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       inset-inline-end: 1rem;
       inset-block: 50%;
       align-self: center;
+
+      &[aria-expanded="true"] {
+        #hamburger-closed {
+          display: none;
+        }
+      }
+
+      &[aria-expanded="false"] {
+        #hamburger-open {
+          display: none;
+        }
+      }
     }
 
     #site-title {
@@ -449,4 +477,24 @@ import SiteNavigation from "../components/SiteNavigation.astro";
   };
 
   logoutButton.addEventListener("click", logUserOut);
+</script>
+
+<script is:inline>
+  const hamburgerButton = document.querySelector("#site-hamburger");
+  const mobileNavigationMenu = document.querySelector("#mobile-navigation");
+
+  const handleHamburgerClick = (event) => {
+    const target = event.currentTarget;
+    const mobileMenuIsExpanded = target.getAttribute("aria-expanded") === "true";
+
+    if (mobileMenuIsExpanded) {
+      mobileNavigationMenu.setAttribute("data-expanded", "false");
+      target.setAttribute("aria-expanded", "false");
+    } else {
+      mobileNavigationMenu.setAttribute("data-expanded", "true");
+      target.setAttribute("aria-expanded", "true");
+    }
+  };
+
+  hamburgerButton.addEventListener("click", handleHamburgerClick);
 </script>
