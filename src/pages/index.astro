@@ -1,37 +1,68 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import TextHero from "../components/TextHero.astro";
+import Image from "astro/components/Image.astro";
+import billy from "../../public/images/lake-billy-16-9-d.webp";
 ---
 
 <Layout>
-  <!-- Temp Homepage -->
-  <TextHero>
-    <div class="h1">
-      <h1>Stupor Bowl</h1><wbr />
-      <span> 28</span>
+  <div class="pile">
+    <div class="background-container">
+      <Image
+        src={billy}
+        width={2342}
+        height={1317}
+        widths={[350, 768, 992, 1200, 1440, 2000, 3000]}
+        sizes="(min-width: 992px) 100vw, 992px"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
-    <h2><time datetime="2027-02-13">Saturday, February 13th 2027</time></h2>
-    <div class="location">Minneapolis, Minnesota</div>
-  </TextHero>
-  <section aria-labelledby="posts-title">
-    <h2 id="posts-title">Latest News</h2>
-    <div id="posts-container">Loading news...</div>
-  </section>
+    <TextHero>
+      <div class="h1">
+        <h1>Stupor Bowl</h1><wbr />
+        <span> 28</span>
+      </div>
+      <h2><time datetime="2027-02-13">Saturday, February 13th 2027</time></h2>
+      <div class="location">Minneapolis, Minnesota</div>
+    </TextHero>
+  </div>
 </Layout>
 
 <style is:inline>
-  #posts-container {
-    article {
-      padding-inline: 0.5rem;
-      margin-block-end: 2rem;
+  .pile {
+    display: grid;
+    place-items: center;
 
-      h2 {
-        font-size: 1.25rem;
+    & > * {
+      grid-area: 1 / -1;
+    }
+
+    .background-container {
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        inset-block-start: 80%;
+        inset-block-end: 0;
+        background: linear-gradient(transparent, var(--site-background-color));
+      }
+
+      img {
+        opacity: 0.1;
+        inline-size: 100vw;
+        block-size: calc(100vh - var(--footer-block-size));
+        object-fit: cover;
+        object-position: 60%;
       }
     }
   }
-
   .text-hero {
+    filter: drop-shadow(2px 2px 2px #000);
+
     time {
       font-size: clamp(1.25rem, 6vw, 2.5rem);
     }
@@ -56,34 +87,3 @@ import TextHero from "../components/TextHero.astro";
     font-weight: normal;
   }
 </style>
-
-<script is:inline>
-  const getPosts = async () => {
-    return await api("posts");
-  };
-
-  const buildPosts = (posts) => {
-    const postsContainer = document.querySelector("#posts-container");
-    postsContainer.innerText = "";
-
-    for (const post of posts) {
-      const articleElement = document.createElement("article");
-      articleElement.innerHTML = `
-        <h2>${post.title}</h2>
-        <address>Posted by ${post.display_name}</address>
-        <time>${post.datePosted}</time>
-        <div class="post-content">
-          ${post.content}
-        </div>
-      `;
-
-      postsContainer.appendChild(articleElement);
-    }
-  };
-
-  (async () => {
-    const allPosts = await getPosts();
-    console.log(allPosts);
-    buildPosts(allPosts);
-  })();
-</script>

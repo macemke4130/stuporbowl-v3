@@ -10,41 +10,9 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <script is:inline>
-      const env = window.location.hostname.includes("localhost") ? "http://localhost:3004" : "";
-
-      const api = async (apiPath, method = "GET", body) => {
-        try {
-          const headers = { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json", Accept: "application/json" };
-          const request = await fetch(`${env}/api/${apiPath}`, {
-            method,
-            headers,
-            body: JSON.stringify(body),
-          });
-          const response = await request.json();
-          return response;
-        } catch (e) {
-          console.error(e);
-        }
-      };
-    </script>
     <title>Stupor Bowl</title>
   </head>
   <body>
-    <header>
-      <div id="site-title">Stupor Bowl<span class="sr-only">dot org</span></div>
-      <nav id="mobile-navigation" aria-label="Main">
-        <div role="list">
-          <SiteNavigation />
-        </div>
-      </nav>
-      <nav id="desktop-navigation" aria-label="Main">
-        <div role="list">
-          <SiteNavigation />
-        </div>
-      </nav>
-      <button id="site-hamburger">≡</button>
-    </header>
     <main>
       <slot />
     </main>
@@ -148,8 +116,13 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     body {
       display: grid;
-      grid-template-rows: var(--header-block-size) 1fr var(--footer-block-size);
+      grid-template-rows: 1fr var(--footer-block-size);
       color: var(--site-text-color);
+    }
+
+    main {
+      display: grid;
+      place-items: center;
     }
 
     a {
@@ -241,7 +214,6 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     :where(footer) {
       block-size: 6rem;
       align-content: center;
-      border-block-start: 1px solid var(--primary-button-color);
       text-align: center;
     }
 
@@ -408,8 +380,8 @@ import SiteNavigation from "../components/SiteNavigation.astro";
   @media (min-inline-size: 768px) {
   }
 
+  /* This is maximum content inline-size */
   @media (min-inline-size: 992px) {
-    /* This is maximum content inline-size */
     :where(main) {
       padding-inline: 0;
     }
