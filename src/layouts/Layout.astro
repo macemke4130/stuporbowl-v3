@@ -33,7 +33,9 @@ import SiteNavigation from "../components/SiteNavigation.astro";
   <body>
     <header>
       <div class="header-container">
-        <div id="site-title">Stupor Bowl<span class="sr-only">dot org</span></div>
+        <div id="site-title">
+          <a href="/"><span class="site-name">Stupor Bowl</span><span class="tld">.org</span></a>
+        </div>
         <nav id="mobile-navigation" aria-label="Main">
           <div role="list">
             <SiteNavigation />
@@ -340,6 +342,25 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       align-content: center;
       font-weight: bold;
       font-size: 1.5rem;
+      position: relative;
+      inline-size: fit-content;
+      justify-self: center;
+      transform: translateY(0.2rem);
+
+      a {
+        text-decoration: none;
+      }
+
+      .tld {
+        position: absolute;
+        inset-inline-end: 0;
+        inset-block-end: -0.3rem;
+        font-size: 0.5em;
+
+        @media (min-width: 992px) {
+          inset-block-end: 1.2rem;
+        }
+      }
 
       @media (min-width: 992px) {
         text-align: start;
