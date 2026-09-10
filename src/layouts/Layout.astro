@@ -32,18 +32,20 @@ import SiteNavigation from "../components/SiteNavigation.astro";
   </head>
   <body>
     <header>
-      <div id="site-title">Stupor Bowl<span class="sr-only">dot org</span></div>
-      <nav id="mobile-navigation" aria-label="Main">
-        <div role="list">
-          <SiteNavigation />
-        </div>
-      </nav>
-      <nav id="desktop-navigation" aria-label="Main">
-        <div role="list">
-          <SiteNavigation />
-        </div>
-      </nav>
-      <button id="site-hamburger">≡</button>
+      <div class="header-container">
+        <div id="site-title">Stupor Bowl<span class="sr-only">dot org</span></div>
+        <nav id="mobile-navigation" aria-label="Main">
+          <div role="list">
+            <SiteNavigation />
+          </div>
+        </nav>
+        <nav id="desktop-navigation" aria-label="Main">
+          <div role="list">
+            <SiteNavigation />
+          </div>
+        </nav>
+        <button id="site-hamburger" aria-label="Navigation" aria-expanded="false" aria-controls="mobile-navigation">≡</button>
+      </div>
     </header>
     <main>
       <slot />
@@ -259,7 +261,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
       [role="list"] {
         display: flex;
-        justify-content: center;
+        justify-content: end;
         align-items: center;
         gap: 1rem;
         block-size: 100%;
@@ -276,6 +278,14 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     #mobile-navigation[data-expanded="true"] {
       display: block;
+      position: absolute;
+      outline: 1px solid red;
+      inset-inline: 0;
+      inset-block-start: var(--header-block-size);
+    }
+
+    #mobile-navigation[data-expanded="true"] {
+      display: block;
     }
 
     #mobile-navigation,
@@ -288,6 +298,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     #site-hamburger {
       inline-size: 3rem;
       block-size: 3rem;
+      font-size: 1.8rem;
       padding: 0;
       margin: 0;
       position: absolute;
@@ -301,6 +312,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       align-content: center;
       font-weight: bold;
       font-size: 1.5rem;
+
+      @media (min-width: 992px) {
+        text-align: start;
+      }
     }
 
     #site-footer {
@@ -311,16 +326,19 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     }
 
     header {
-      position: relative;
-      align-content: center;
+      .header-container {
+        position: relative;
+        align-content: center;
+        block-size: 100%;
 
-      @media (min-width: 992px) {
-        display: grid;
-        grid-template-columns: 20% 1fr;
-        padding-inline: 1rem;
-        margin-inline: auto;
-        inline-size: 100%;
-        max-inline-size: var(--site-max-inline-size);
+        @media (min-width: 992px) {
+          display: flex;
+          justify-content: space-between;
+          padding-inline: 1rem;
+          margin-inline: auto;
+          inline-size: 100%;
+          max-inline-size: var(--site-max-inline-size);
+        }
       }
     }
 
