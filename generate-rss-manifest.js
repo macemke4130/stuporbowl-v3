@@ -3,7 +3,7 @@ import path from "path";
 
 const DIST_DIR = "./dist";
 const OUTPUT_FILE = path.join(DIST_DIR, "static-posts.json");
-const BASE_URL = "/";
+const BASE_URL = "";
 const TARGET_DIRS = ["articles", "archive"];
 
 async function getHtmlFiles(dir) {
