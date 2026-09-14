@@ -1,0 +1,5 @@
+---
+const dateTime: TimeHTMLAttributes = Astro.props.dateTime;
+---
+
+<div id="date-published">Published on <time dateTime={dateTime}></time><slot /></div>
