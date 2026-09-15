@@ -132,7 +132,7 @@ app.get("/rss.xml", async (req, res) => {
 
     // 4. Build RSS XML
     const feed = new RSS({
-      title: "Stupor Bowl Dot Org site updates.",
+      title: "stuporbowl.org updates.",
       description: "Combined updates from database and static Astro pages",
       feed_url: "https://www.stuporbowl.org/rss.xml",
       site_url: "https://www.stuporbowl.org",
