@@ -1,8 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
+import Image from "astro/components/Image.astro";
+
+import billy from "../../public/images/lake-billy-16-9-d.webp";
 ---
 
 <Layout>
-  <Hero />
-</Layout>
+  <Hero>
+    <Image src={billy} />
+  </Hero></Layout
+>
