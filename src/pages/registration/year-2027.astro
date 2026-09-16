@@ -1,13 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
-import Image from "astro/components/Image.astro";
 
-import billy from "../../public/images/lake-billy-16-9-d.webp";
+import billy from "../../../public/images/lake-billy-16-9-d.webp";
 ---
 
 <Layout>
-  <Hero>
-    <Image src={billy} />
-  </Hero></Layout
->
+  <Hero background={billy}>
+    <h1>Register for Stupor Bowl 28</h1>
+  </Hero>
+</Layout>

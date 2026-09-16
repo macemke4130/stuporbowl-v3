@@ -1,24 +1,64 @@
 ---
-const { image } = Astro.props;
+import Image from "astro/components/Image.astro";
+
+const { background } = Astro.props;
 ---
 
 <div class="hero">
-  <Image
-    src={image}
-    width={2342}
-    height={1317}
-    widths={[350, 768, 992, 1200, 1440, 2000, 3000]}
-    sizes="(min-width: 992px) 100vw, 992px"
-    alt=""
-    loading="eager"
-    fetchpriority="high"
-  />
-  <slot />
+  <div class="background-container">
+    <Image
+      src={background}
+      width={2342}
+      height={1317}
+      widths={[350, 768, 992, 1200, 1440, 2000, 3000]}
+      sizes="(min-width: 992px) 100vw, 992px"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      class="background"
+    />
+    <div class="gradient"></div>
+  </div>
+  <div class="text-container">
+    <slot />
+  </div>
 </div>
 
 <style>
   .hero {
     inline-size: 100vw;
     block-size: 60vh;
+    display: grid;
+    align-items: end;
+
+    & > * {
+      grid-area: 1 / -1;
+    }
+
+    .background-container {
+      display: grid;
+      align-items: end;
+
+      & > * {
+        grid-area: 1 / -1;
+      }
+
+      .gradient {
+        block-size: 50%;
+        background: linear-gradient(transparent, var(--site-background-color));
+      }
+
+      .background {
+        block-size: 60vh;
+        inline-size: 100vw;
+        object-fit: cover;
+      }
+    }
+
+    .text-container {
+      padding-block-end: 2rem;
+      padding-inline: 1rem;
+      text-wrap: balance;
+    }
   }
 </style>
