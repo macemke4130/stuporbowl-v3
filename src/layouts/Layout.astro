@@ -132,8 +132,36 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     }
 
     :where(html, body) {
+      font-size: 1.15rem;
       block-size: 100%;
       margin: 0;
+    }
+
+    :where(label) {
+      display: block;
+    }
+
+    :where(input, select) {
+      font-size: inherit;
+      font-family: inherit;
+      padding-inline: 0.25rem;
+      padding-block: 0.15rem;
+      display: block;
+    }
+
+    :where(input[type="text"], input[type="number"], input[type="tel"], input[type="email"], input[type="date"], select) {
+      inline-size: 100%;
+    }
+
+    :where(input[type="checkbox"], input[type="radio"]) {
+      inline-size: 2rem;
+      block-size: 2rem;
+      accent-color: var(--site-accent-color);
+    }
+
+    :where(.radio-group) {
+      display: flex;
+      gap: 2rem;
     }
   }
 
@@ -145,7 +173,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     *:focus-visible {
       outline: 5px dotted var(--site-accent-color);
-      outline-offset: 8px;
+      outline-offset: 1px;
     }
 
     html {
@@ -155,7 +183,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     body {
       display: grid;
-      grid-template-rows: var(--header-block-size) 1fr var(--footer-block-size);
+      grid-template-rows: var(--header-block-size) 1fr 1fr;
       color: var(--site-text-color);
     }
 
@@ -243,13 +271,6 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     :where(header) {
       border-block-end: 1px solid var(--primary-button-color);
-    }
-
-    :where(footer) {
-      block-size: 6rem;
-      align-content: center;
-      border-block-start: 1px solid var(--primary-button-color);
-      text-align: center;
     }
 
     :where(a) {
@@ -368,6 +389,12 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     }
 
     #site-footer {
+      margin-block-start: 2rem;
+      padding-block: 2rem;
+      align-content: center;
+      border-block-start: 1px solid var(--primary-button-color);
+      text-align: center;
+
       .footer-contact-link {
         display: block;
         padding-block: 0.5rem;
@@ -418,6 +445,8 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     font-weight: inherit;
     background-color: transparent;
     block-size: fit-content;
+    border-radius: 0;
+    min-block-size: 0;
   }
 
   @layer utilities {
@@ -446,6 +475,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       white-space: nowrap;
       position: absolute;
       overflow: hidden;
+    }
+
+    .display-none {
+      display: none;
     }
 
     .logged-in-only {

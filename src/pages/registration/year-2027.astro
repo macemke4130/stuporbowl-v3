@@ -9,4 +9,143 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
   <Hero background={billy}>
     <h1>Register for Stupor Bowl 28</h1>
   </Hero>
+  <div id="form-columns" class="page-inline-size">
+    <div id="text-container">
+      <div id="text-wrapper">
+        <p>
+          Please make sure you understand StuporBowl's <a href="/code-of-conduct.html">code of conduct</a> before registering. We have a zero tolerance policy for
+          assholes.
+        </p>
+        <p>Race fee is $25. We prefer Venmo but also accept cash on race day. You'll get Venmo information after filling out this form. Race fee includes:</p>
+        <ul>
+          <li>T-Shirt</li>
+          <li>Koozie</li>
+          <li>Spoke card</li>
+          <li>Manifest</li>
+          <li>Your best race all year</li>
+        </ul>
+        <p>All fields are required.</p>
+      </div>
+    </div>
+    <div id="form-wrapper">
+      <form aria-labelledby="page-title">
+        <label>
+          <span>Name</span>
+          <input id="name" type="text" maxlength="32" required />
+        </label>
+        <label>
+          <span>Email Address</span>
+          <input id="email" type="email" maxlength="32" required />
+        </label>
+        <label>
+          <span>Pronouns</span>
+          <input id="pronouns" type="text" maxlength="32" required />
+        </label>
+        <label>
+          <span>Birthday</span>
+          <input id="birthdate" type="date" required />
+        </label>
+        <fieldset>
+          <legend>Twin Cities Local?</legend>
+          <div class="radio-group">
+            <label> <span>Yes</span><input type="radio" name="local" value="true" class="front-end-only" required /> </label>
+            <label> <span>No</span><input type="radio" name="local" value="false" class="front-end-only" /> </label>
+          </div>
+          <label class="display-none">
+            <span>What city are you from?</span>
+            <input id="region" type="text" />
+          </label>
+        </fieldset>
+        <label>
+          <span>Riding fixed?</span>
+          <select id="fixed" required>
+            <option value="">-- Please Select --</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </label>
+        <label>
+          <span class="label-row">
+            <span>Race Type</span>
+            <button id="type-explainer-button" type="button" class="link learn-more" role="tooltip"
+              >Learn more <span class="sr-only">about race types</span></button
+            >
+          </span>
+          <select id="race" required>
+            <option value="">-- Please Select --</option>
+            <option value="stupor">Stupor</option>
+            <option value="speed">Speed</option>
+          </select>
+        </label>
+        <label>
+          <span>Category</span>
+          <select id="category" required>
+            <option value="">-- Please Select --</option>
+            <option value="open">Open</option>
+            <option value="women">Women</option>
+            <option value="tgnc">Trans / Gender Non-Conforming</option>
+          </select>
+        </label>
+        <label>
+          <span>Shirt Size</span>
+          <select id="shirtSize" required>
+            <option value="">-- Please Select --</option>
+            <option value="extra-small">Extra Small</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="extra-large">Extra Large</option>
+          </select>
+        </label>
+        <label>
+          <span>Payment</span>
+          <select id="payment" required>
+            <option value="">-- Please Select --</option>
+            <option value="venmo">Venmo today</option>
+            <option value="cash">Cash day of</option>
+          </select>
+        </label>
+        <label>
+          <span>I have read and agree to the terms laid out in the <a href="/articles/waiver">waiver.</a></span>
+          <input id="waiver-consent" type="checkbox" required />
+        </label>
+        <button id="register" type="submit">Register</button>
+      </form>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  #form-columns {
+    --form-padding: 1.15rem;
+
+    @media (min-width: 992px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    label {
+      margin-block-end: var(--form-padding);
+    }
+
+    fieldset {
+      margin-block-end: var(--form-padding);
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    input,
+    select {
+      margin-block-start: 0.15rem;
+    }
+
+    .learn-more {
+      font-size: 0.8em;
+    }
+  }
+</style>
