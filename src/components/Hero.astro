@@ -1,8 +1,18 @@
 ---
-const {};
+const { image } = Astro.props;
 ---
 
 <div class="hero">
+  <Image
+    src={image}
+    width={2342}
+    height={1317}
+    widths={[350, 768, 992, 1200, 1440, 2000, 3000]}
+    sizes="(min-width: 992px) 100vw, 992px"
+    alt=""
+    loading="eager"
+    fetchpriority="high"
+  />
   <slot />
 </div>
 
