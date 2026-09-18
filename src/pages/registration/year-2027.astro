@@ -9,6 +9,12 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
   <Hero background={billy}>
     <h1>Register for Stupor Bowl 28</h1>
   </Hero>
+  <div id="form-success" class="display-none">
+    <h1>Thank you for registering!</h1>
+    <p>Your racer number is</p>
+    <div id="racer-number"></div>
+    <p>Please keep this number for race day.</p>
+  </div>
   <div id="form-columns" class="page-inline-size">
     <div id="text-container">
       <div id="text-wrapper">
@@ -109,22 +115,39 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
           <span>I have read and agree to the terms laid out in the <a href="/articles/waiver">waiver.</a></span>
           <input id="waiver-consent" name="racer_has_signed_waiver" type="checkbox" required />
         </label>
-        <button id="register" type="submit">Register</button>
+        <button id="registration-submit" type="submit">Register</button>
       </form>
     </div>
   </div>
 </Layout>
 
 <script is:inline>
+  const formColumnsElement = document.querySelector("#form-columns");
+  const formSuccessElement = document.querySelector("#form-success");
   const registrationForm = document.querySelector("#registration");
+  const submitRegistrationButton = document.querySelector("#registration-submit");
+  const racerNumberElement = document.querySelector("#racer-number");
+
+  const displaySuccessPage = (racerNumber) => {
+    racerNumberElement.innerText = racerNumber;
+    formColumnsElement.classList.add("display-none");
+    formSuccessElement.classList.remove("display-none");
+  };
 
   const newRegistrationAttempt = async (data) => {
     const request = await api("registrations/2027", "POST", data);
-    console.log(request);
+
+    if (request.status === 200) {
+      displaySuccessPage(request.data.racer_number);
+    } else {
+      // Show error message
+    }
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    submitRegistrationButton.setAttribute("disabled", "");
 
     const formElement = event.target;
     const formData = new FormData(formElement);
