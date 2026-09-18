@@ -28,37 +28,37 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
       </div>
     </div>
     <div id="form-wrapper">
-      <form aria-labelledby="page-title">
+      <form id="registration" aria-labelledby="page-title">
         <label>
           <span>Name</span>
-          <input id="name" type="text" maxlength="32" required />
+          <input id="fullname" name="name" type="text" maxlength="32" autocomplete="on" required />
         </label>
         <label>
           <span>Email Address</span>
-          <input id="email" type="email" maxlength="32" required />
+          <input id="email" name="email" type="email" maxlength="32" autocomplete="on" required />
         </label>
         <label>
           <span>Pronouns</span>
-          <input id="pronouns" type="text" maxlength="32" required />
+          <input id="pronouns" name="pronouns" type="text" maxlength="32" autocomplete="on" required />
         </label>
         <label>
           <span>Birthday</span>
-          <input id="birthdate" type="date" required />
+          <input id="birthdate" name="birthday" type="date" required />
         </label>
         <fieldset>
           <legend>Twin Cities Local?</legend>
           <div class="radio-group">
-            <label> <span>Yes</span><input type="radio" name="local" value="true" class="front-end-only" required /> </label>
-            <label> <span>No</span><input type="radio" name="local" value="false" class="front-end-only" /> </label>
+            <label> <span>Yes</span><input type="radio" name="twin_cities_local" value="true" class="front-end-only" required /> </label>
+            <label> <span>No</span><input type="radio" name="twin_cities_local" value="false" class="front-end-only" /> </label>
           </div>
           <label class="display-none">
             <span>What city are you from?</span>
-            <input id="region" type="text" />
+            <input id="region" name="origin_city" type="text" />
           </label>
         </fieldset>
         <label>
           <span>Riding fixed?</span>
-          <select id="fixed" required>
+          <select id="fixed" name="fixed_gear" required>
             <option value="">-- Please Select --</option>
             <option value="false">No</option>
             <option value="true">Yes</option>
@@ -71,7 +71,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
               >Learn more <span class="sr-only">about race types</span></button
             >
           </span>
-          <select id="race" required>
+          <select id="race" name="race_type" required>
             <option value="">-- Please Select --</option>
             <option value="stupor">Stupor</option>
             <option value="speed">Speed</option>
@@ -79,16 +79,16 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
         </label>
         <label>
           <span>Category</span>
-          <select id="category" required>
+          <select id="category" name="gender_category" required>
             <option value="">-- Please Select --</option>
             <option value="open">Open</option>
             <option value="women">Women</option>
-            <option value="tgnc">Trans / Gender Non-Conforming</option>
+            <option value="trans">Trans / Gender Non-Conforming</option>
           </select>
         </label>
         <label>
           <span>Shirt Size</span>
-          <select id="shirtSize" required>
+          <select id="shirtSize" name="shirt_size" required>
             <option value="">-- Please Select --</option>
             <option value="extra-small">Extra Small</option>
             <option value="small">Small</option>
@@ -99,7 +99,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
         </label>
         <label>
           <span>Payment</span>
-          <select id="payment" required>
+          <select id="payment" name="payment_method" required>
             <option value="">-- Please Select --</option>
             <option value="venmo">Venmo today</option>
             <option value="cash">Cash day of</option>
@@ -107,13 +107,43 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
         </label>
         <label>
           <span>I have read and agree to the terms laid out in the <a href="/articles/waiver">waiver.</a></span>
-          <input id="waiver-consent" type="checkbox" required />
+          <input id="waiver-consent" name="racer_has_signed_waiver" type="checkbox" required />
         </label>
         <button id="register" type="submit">Register</button>
       </form>
     </div>
   </div>
 </Layout>
+
+<script is:inline>
+  const registrationForm = document.querySelector("#registration");
+
+  const newRegistrationAttempt = async (data) => {
+    const request = await api("registrations/2027", "POST", data);
+    console.log(request);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    const formElement = event.target;
+    const formData = new FormData(formElement);
+    const dataFromClient = Object.fromEntries(formData.entries());
+
+    console.log(dataFromClient);
+
+    const dataForServer = {
+      ...dataFromClient,
+      twin_cities_local: dataFromClient.twin_cities_local === "true",
+      fixed_gear: dataFromClient.fixed_gear === "true",
+      racer_has_signed_waiver: dataFromClient.racer_has_signed_waiver === "on",
+    };
+
+    newRegistrationAttempt(dataForServer);
+  };
+
+  registrationForm.addEventListener("submit", handleFormSubmit);
+</script>
 
 <style>
   #form-columns {

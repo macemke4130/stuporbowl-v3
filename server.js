@@ -4,7 +4,7 @@ import RSS from "rss";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import { query } from "./dbConnect.js";
+import { query, prepData, transaction } from "./dbConnect.js";
 import auth from "./auth.js";
 
 const PORT = process.env.PORT || 3001;
@@ -71,26 +71,35 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", environment: process.env.NODE_ENV || "development" });
 });
 
-app.get("/api/racers/2026", async (req, res) => {
-  const sql = await query(`SELECT * FROM year2026;`);
-  res.json(sql);
-});
-
 app.get("/api/posts", async (req, res) => {
-  const sql = await query(
-    `select posts.id, posts.date_created, posts.title, posts.content, users.full_name as display_name from posts join users on posts.posted_by = users.id ORDER BY posts.date_created DESC;`,
-  );
+  try {
+    const sql = await query(
+      `select posts.id, posts.date_created, posts.title, posts.content, users.full_name as display_name from posts join users on posts.posted_by = users.id ORDER BY posts.date_created DESC;`,
+    );
 
-  const postsWithFormattedDates = sql.map((post) => {
-    return {
-      ...post,
-      datePosted: humanReadableDate(post.date_created),
-    };
-  });
+    const postsWithFormattedDates = sql.map((post) => {
+      return {
+        ...post,
+        datePosted: humanReadableDate(post.date_created),
+      };
+    });
 
-  res.json(postsWithFormattedDates);
+    res.json({
+      status: 200,
+      message: `All posts.`,
+      data: postsWithFormattedDates,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 500,
+      message: "Server error",
+      data: error,
+    });
+  }
 });
 
+// I don't think this is used yet.
 app.get("/api/post/:id", async (req, res) => {
   const postId = req.params.id;
 
@@ -99,7 +108,65 @@ app.get("/api/post/:id", async (req, res) => {
     postId,
   );
 
-  res.json(sql[0]);
+  res.json({
+    status: 200,
+    message: `Post with id ${postId}.`,
+    data: sql[0],
+  });
+});
+
+app.post("/api/registrations/2027", async (req, res) => {
+  const raceYear = 2027;
+
+  try {
+    const data = prepData(req.body);
+
+    // Pass your queries inside the transaction callback
+    const result = await transaction(async (txQuery) => {
+      // 1. Increment counter on dedicated transaction connection
+      await txQuery(
+        `INSERT INTO racer_counters (race_year, last_racer_number) 
+         VALUES (?, 1) 
+         ON DUPLICATE KEY UPDATE last_racer_number = LAST_INSERT_ID(last_racer_number + 1)`,
+        [raceYear],
+      );
+
+      // 2. Fetch assigned racer number
+      const [counterResult] = await txQuery("SELECT LAST_INSERT_ID() AS racer_number");
+      const assignedRacerNumber = counterResult.racer_number;
+
+      // 3. Prepare payload with race_year and racer_number
+      const columns = `${data.columns}, race_year, racer_number`;
+      const marks = `${data.marks}, ?, ?`;
+      const values = [...data.values, raceYear, assignedRacerNumber];
+
+      // 4. Insert registration on same connection
+      const sql = await txQuery(`INSERT INTO registrations (${columns}) VALUES (${marks})`, values);
+
+      return { sql, assignedRacerNumber };
+    });
+
+    const dataForClient = {
+      ...result.sql,
+      racer_number: result.assignedRacerNumber,
+    };
+
+    data.racer_number = result.assignedRacerNumber;
+
+    res.json({
+      status: 200,
+      message: "Successfully registered racer",
+      data: dataForClient,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.sqlMessage || "Registration failed",
+      status: error.errno || 500,
+      data: null,
+    });
+  }
 });
 
 app.get("/rss.xml", async (req, res) => {
