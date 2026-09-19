@@ -60,15 +60,20 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
           </div>
           <label id="origin-city-container" class="display-none">
             <span>What city are you from?</span>
-            <input id="region" name="origin_city" type="text" />
+            <input name="origin_city" type="text" />
           </label>
         </fieldset>
         <label>
-          <span>Riding fixed?</span>
-          <select id="fixed" name="fixed_gear" required>
+          <span class="label-row">
+            <span>Bike Type</span>
+            <span>You can change this later</span>
+          </span>
+          <select name="bike_type" required>
             <option value="">-- Please Select --</option>
-            <option value="false">No</option>
-            <option value="true">Yes</option>
+            <option value="fixed">Fixed Gear</option>
+            <option value="single-speed">Single Speed</option>
+            <option value="geared">Multi Speed</option>
+            <option value="electric">Electric Assist</option>
           </select>
         </label>
         <label>
@@ -83,7 +88,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
           </select>
         </label>
         <label>
-          <span>Category</span>
+          <span>Gender Category</span>
           <select id="category" name="gender_category" required>
             <option value="">-- Please Select --</option>
             <option value="open">Open</option>
@@ -144,6 +149,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
   const submitRegistrationButton = document.querySelector("#registration-submit");
   const racerNumberElement = document.querySelector("#racer-number");
   const twinCitiesLocalRadioGroup = document.querySelectorAll(`[name="twin_cities_local"]`);
+  const originCityInput = document.querySelector(`[name="origin_city"]`);
   const originCityContainer = document.querySelector("#origin-city-container");
   const raceTypeButton = document.querySelector("#type-explainer-button");
   const raceTypeDialog = document.querySelector("#race-type-dialog");
@@ -158,7 +164,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
     if (target.getAttribute("value") === "true") {
       originCityContainer.classList.add("display-none");
     } else {
-      originCityContainer.setAttribute("value", "");
+      originCityInput.setAttribute("value", "");
       originCityContainer.classList.remove("display-none");
     }
   };
@@ -191,7 +197,6 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
     const dataForServer = {
       ...dataFromClient,
       twin_cities_local: dataFromClient.twin_cities_local === "true",
-      fixed_gear: dataFromClient.fixed_gear === "true",
       racer_has_signed_waiver: dataFromClient.racer_has_signed_waiver === "on",
     };
 
@@ -230,10 +235,6 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
     input,
     select {
       margin-block-start: 0.15rem;
-    }
-
-    .learn-more {
-      font-size: 0.8em;
     }
   }
 </style>

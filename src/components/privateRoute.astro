@@ -10,7 +10,7 @@
       const tokenIsValid = await validateToken();
 
       if (!tokenIsValid) {
-        localStorage.clear();
+        localStorage.removeItem("token");
         window.location.replace("/login");
         return;
       }

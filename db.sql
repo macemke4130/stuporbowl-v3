@@ -56,7 +56,7 @@ users.full_name as posted_by
 	birthday DATE NOT NULL,
     twin_cities_local BOOL NOT NULL,
     origin_city VARCHAR(32),
-    fixed_gear BOOL NOT NULL,
+    bike_type ENUM('fixed', 'single-speed', 'geared', 'electric') NOT NULL,
     race_type ENUM('stupor', 'speed') NOT NULL,
     gender_category ENUM('open', 'women', 'trans') NOT NULL,
     shirt_size ENUM('extra-small', 'small', 'medium', 'large', 'extra-large') NOT NULL,
@@ -64,6 +64,8 @@ users.full_name as posted_by
     racer_has_paid BOOL DEFAULT FALSE,
     racer_has_signed_waiver BOOL DEFAULT FALSE
 );
+
+drop table registrations;
 
 CREATE TABLE racer_counters (
     race_year INT PRIMARY KEY,
