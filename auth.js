@@ -18,7 +18,7 @@ const unauthorizedResponse = {
 const permissionList = ["is-admin", "new-post", "edit-post", "delete-post", "new-user", "edit-user", "delete-user", "read-racer", "edit-racer"];
 
 const validateJWT = async (tokenFromClient) => {
-  return await jwt.verify(tokenFromClient, privateKey, function (err, decoded) {
+  return jwt.verify(tokenFromClient, privateKey, function (err, decoded) {
     return err ? false : true;
   });
 };
@@ -181,9 +181,6 @@ router.post(`${apiRoute}/admin/validate-jwt`, async (req, res) => {
   res.json(isValidToken);
 });
 
-(async () => {
-  const hashedPassword = await bcrypt.hash("test1", saltRounds);
-  // console.log(hashedPassword);
-})();
+(async () => {})();
 
 export default router;

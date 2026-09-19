@@ -58,7 +58,8 @@ import TextHero from "../components/TextHero.astro";
 
 <script is:inline>
   const getPosts = async () => {
-    return await api("posts");
+    const request = await api("posts");
+    return request;
   };
 
   const buildPosts = (posts) => {
@@ -82,7 +83,11 @@ import TextHero from "../components/TextHero.astro";
 
   (async () => {
     const allPosts = await getPosts();
-    console.log(allPosts);
-    buildPosts(allPosts);
+
+    if (allPosts.status) {
+      buildPosts(allPosts.data);
+    } else {
+      // Failed to load posts.
+    }
   })();
 </script>

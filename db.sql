@@ -65,10 +65,6 @@ users.full_name as posted_by
     racer_has_signed_waiver BOOL DEFAULT FALSE
 );
 
-DROP TABLE registrations;
-
-SELECT * FROM registrations;
-
 CREATE TABLE racer_counters (
     race_year INT PRIMARY KEY,
     last_racer_number INT NOT NULL DEFAULT 0

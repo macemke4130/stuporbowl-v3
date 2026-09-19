@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
+import Dialog from "../../components/Dialog.astro";
 
 import billy from "../../../public/images/lake-billy-16-9-d.webp";
 ---
@@ -57,7 +58,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
             <label> <span>Yes</span><input type="radio" name="twin_cities_local" value="true" class="front-end-only" required /> </label>
             <label> <span>No</span><input type="radio" name="twin_cities_local" value="false" class="front-end-only" /> </label>
           </div>
-          <label class="display-none">
+          <label id="origin-city-container" class="display-none">
             <span>What city are you from?</span>
             <input id="region" name="origin_city" type="text" />
           </label>
@@ -73,9 +74,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
         <label>
           <span class="label-row">
             <span>Race Type</span>
-            <button id="type-explainer-button" type="button" class="link learn-more" role="tooltip"
-              >Learn more <span class="sr-only">about race types</span></button
-            >
+            <button id="type-explainer-button" type="button" class="link learn-more">Learn more <span class="sr-only">about race types</span></button>
           </span>
           <select id="race" name="race_type" required>
             <option value="">-- Please Select --</option>
@@ -119,6 +118,23 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
       </form>
     </div>
   </div>
+  <Dialog id="race-type-dialog">
+    <div class="text-container">
+      <h2>Stupor Bowl Race Types</h2>
+      <dl>
+        <dt>Stupor</dt>
+        <dd>
+          Usually has 8 to 10 checkpoint stops. In order to get your manifest stamped, you must finish a drink and show your empty drink to the checkpoint
+          volunteers.
+        </dd>
+        <dt>Speed</dt>
+        <dd>
+          Usually has all of the checkpoint stops in the Stupor race, plus 2 - 4 additional checkpoint stops. This race does not require drinking to get your
+          manifest stamped.
+        </dd>
+      </dl>
+    </div>
+  </Dialog>
 </Layout>
 
 <script is:inline>
@@ -127,6 +143,25 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
   const registrationForm = document.querySelector("#registration");
   const submitRegistrationButton = document.querySelector("#registration-submit");
   const racerNumberElement = document.querySelector("#racer-number");
+  const twinCitiesLocalRadioGroup = document.querySelectorAll(`[name="twin_cities_local"]`);
+  const originCityContainer = document.querySelector("#origin-city-container");
+  const raceTypeButton = document.querySelector("#type-explainer-button");
+  const raceTypeDialog = document.querySelector("#race-type-dialog");
+
+  const handleRaceTypeButtonClick = () => {
+    raceTypeDialog.showModal();
+  };
+
+  const handleRacerOriginInput = (event) => {
+    const target = event.currentTarget;
+
+    if (target.getAttribute("value") === "true") {
+      originCityContainer.classList.add("display-none");
+    } else {
+      originCityContainer.setAttribute("value", "");
+      originCityContainer.classList.remove("display-none");
+    }
+  };
 
   const displaySuccessPage = (racerNumber) => {
     racerNumberElement.innerText = racerNumber;
@@ -153,8 +188,6 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
     const formData = new FormData(formElement);
     const dataFromClient = Object.fromEntries(formData.entries());
 
-    console.log(dataFromClient);
-
     const dataForServer = {
       ...dataFromClient,
       twin_cities_local: dataFromClient.twin_cities_local === "true",
@@ -166,6 +199,8 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
   };
 
   registrationForm.addEventListener("submit", handleFormSubmit);
+  raceTypeButton.addEventListener("click", handleRaceTypeButtonClick);
+  twinCitiesLocalRadioGroup.forEach((option) => option.addEventListener("input", handleRacerOriginInput));
 </script>
 
 <style>

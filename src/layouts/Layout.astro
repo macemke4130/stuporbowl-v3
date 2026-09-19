@@ -28,6 +28,36 @@ import SiteNavigation from "../components/SiteNavigation.astro";
         }
       };
     </script>
+
+    <script is:inline>
+      const validateToken = async () => {
+        return await api("admin/validate-jwt", "POST", { token: localStorage.getItem("token") });
+      };
+
+      const checkPermissions = (permissions) => {
+        const rules = permissions.split("").map((rule) => (rule === "1" ? true : false));
+
+        if (rules[0]) {
+          // Has all permissions. No need to check further.
+          document.documentElement.setAttribute("data-is-admin", "true");
+          return;
+        }
+
+        if (rules[1]) document.documentElement.setAttribute("data-is-organizer", "true");
+      };
+
+      (async () => {
+        const tokenIsValid = await validateToken();
+
+        if (!tokenIsValid) {
+          return;
+        }
+
+        document.documentElement.setAttribute("data-user-logged-in", "true");
+
+        checkPermissions(localStorage.getItem("permissions"));
+      })();
+    </script>
     <title>Stupor Bowl</title>
   </head>
   <body>
@@ -61,6 +91,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       </div>
       <div>Copyright Stupor Bowl MPLS |<wbr /> 1998 until forever</div>
     </footer>
+
+    <script is:inline type="speculationrules">
+      { "prefetch": [{ "where": { "selector_matches": "a.prefetch" }, "eagerness": "eager" }] }
+    </script>
   </body>
 </html>
 
@@ -92,6 +126,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     font-weight: bold;
     font-display: swap;
     src: url("../assets/fonts/sb-bold.woff") format("woff");
+  }
+
+  @view-transition {
+    navigation: auto;
   }
 
   @layer reset, defaults, layout, components, utilities, overrides;
@@ -179,6 +217,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     html {
       font-family: sb, system-ui, sans-serif;
       background-color: var(--site-background-color);
+    }
+
+    html:has(dialog[open]) {
+      overflow-y: hidden;
     }
 
     body {
@@ -523,14 +565,14 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 </style>
 
 <script is:inline>
-  const logoutButton = document.querySelector("#logout-button");
+  const logoutButtons = document.querySelectorAll(".logout-button");
 
   const logUserOut = () => {
     localStorage.clear();
     window.location = "/";
   };
 
-  logoutButton.addEventListener("click", logUserOut);
+  logoutButtons.forEach((button) => button.addEventListener("click", logUserOut));
 </script>
 
 <script is:inline>
