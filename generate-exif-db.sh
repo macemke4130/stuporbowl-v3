@@ -37,76 +37,57 @@ echo "Extracting EXIF & GPS data recursively from $IMAGE_DIR..."
 exiftool -r -json \
   -c "%.6f" \
   -FileName \
-  -FilePath \
   -DateTimeOriginal \
-  -ImageWidth \
-  -ImageHeight \
   -Make \
   -Model \
-  -ISO \
-  -FNumber \
-  -ExposureTime \
   -GPSLatitude# \
   -GPSLongitude# \
-  -GPSAltitude \
+  -ImageWidth \
+  -ImageHeight \
   -ext jpg -ext jpeg -ext png -ext webp -ext heic "$IMAGE_DIR" > "$TMP_JSON"
 
 echo "Creating SQLite database: $DB_FILE..."
 
 sqlite3 "$DB_FILE" <<EOF
--- Create destination table with GPS fields
+-- Create destination table with requested fields
 CREATE TABLE IF NOT EXISTS images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     filename TEXT,
-    filepath TEXT,
     date_taken TEXT,
-    width INTEGER,
-    height INTEGER,
     make TEXT,
     model TEXT,
-    iso INTEGER,
-    f_number REAL,
-    exposure_time TEXT,
     latitude REAL,
     longitude REAL,
-    altitude REAL
+    width INTEGER,
+    height INTEGER
 );
 
 -- Extract fields into database table, filtering out missing DateTimeOriginal
 INSERT INTO images (
     filename, 
-    filepath, 
     date_taken, 
-    width, 
-    height, 
     make, 
     model, 
-    iso, 
-    f_number, 
-    exposure_time,
     latitude,
     longitude,
-    altitude
+    width, 
+    height
 )
 SELECT 
     json_extract(value, '$.FileName'),
-    json_extract(value, '$.FilePath'),
     json_extract(value, '$.DateTimeOriginal'),
-    json_extract(value, '$.ImageWidth'),
-    json_extract(value, '$.ImageHeight'),
     json_extract(value, '$.Make'),
     json_extract(value, '$.Model'),
-    json_extract(value, '$.ISO'),
-    json_extract(value, '$.FNumber'),
-    json_extract(value, '$.ExposureTime'),
     CAST(json_extract(value, '$.GPSLatitude') AS REAL),
     CAST(json_extract(value, '$.GPSLongitude') AS REAL),
-    CAST(json_extract(value, '$.GPSAltitude') AS REAL)
+    json_extract(value, '$.ImageWidth'),
+    json_extract(value, '$.ImageHeight')
 FROM json_each(readfile('$TMP_JSON'))
 WHERE json_extract(value, '$.DateTimeOriginal') IS NOT NULL 
   AND json_extract(value, '$.DateTimeOriginal') != '';
 
--- Create indexes for chronological and spatial/location queries
+-- Create indexes for lookups, chronological, and spatial queries
+CREATE INDEX IF NOT EXISTS idx_filename ON images(filename);
 CREATE INDEX IF NOT EXISTS idx_date_taken ON images(date_taken);
 CREATE INDEX IF NOT EXISTS idx_coords ON images(latitude, longitude);
 EOF
