@@ -2,8 +2,12 @@
 
 set -e
 
-# Export Apt buildpack's Perl library paths if running on Heroku
-export PERL5LIB="$PERL5LIB:$HOME/.apt/usr/share/perl5:$HOME/.apt/usr/share/perl/5.38.2:$HOME/.apt/usr/share/perl/5.38"
+# Dynamically locate Apt buildpack Perl libraries during build or runtime
+EXIFTOOL_PATH=$(command -v exiftool 2>/dev/null || true)
+if [ -n "$EXIFTOOL_PATH" ]; stream
+  APT_DIR=$(dirname "$EXIFTOOL_PATH")/..
+  export PERL5LIB="$PERL5LIB:$APT_DIR/share/perl5:$APT_DIR/share/perl/5.38:$APT_DIR/share/perl/5.38.2:$HOME/.apt/usr/share/perl5"
+fi
 
 # Output directly into dist/
 DB_FILE="dist/images.db"
