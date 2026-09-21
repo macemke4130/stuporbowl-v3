@@ -220,7 +220,7 @@ app.post("/api/images/photo-data", (req, res) => {
     const images = stmt.all(...filenames);
     db.close();
 
-    res.json({ count: images.length, images });
+    res.json(images);
   } catch (error) {
     console.error("Error fetching images by filenames:", error);
     res.status(500).json({ error: "Failed to retrieve image metadata." });

@@ -26,7 +26,6 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       const api = async (apiPath, method = "GET", body) => {
         try {
           const headers = { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json", Accept: "application/json" };
-          console.log(`FETCH: ${env}/api/${apiPath}`);
           const request = await fetch(`${env}/api/${apiPath}`, {
             method,
             headers,
