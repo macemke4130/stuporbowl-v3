@@ -2,11 +2,11 @@
 
 set -e
 
-# Dynamically locate Apt buildpack Perl libraries during build or runtime
-EXIFTOOL_PATH=$(command -v exiftool 2>/dev/null || true)
-if [ -n "$EXIFTOOL_PATH" ]; stream
-  APT_DIR=$(dirname "$EXIFTOOL_PATH")/..
-  export PERL5LIB="$PERL5LIB:$APT_DIR/share/perl5:$APT_DIR/share/perl/5.38:$APT_DIR/share/perl/5.38.2:$HOME/.apt/usr/share/perl5"
+# Resolve PERL5LIB dynamically relative to the exiftool binary location
+EXIFTOOL_BIN=$(command -v exiftool 2>/dev/null || true)
+if [ -n "$EXIFTOOL_BIN" ]; then
+    APT_USR_DIR=$(cd "$(dirname "$EXIFTOOL_BIN")/.." && pwd)
+    export PERL5LIB="$PERL5LIB:$APT_USR_DIR/share/perl5:$APT_USR_DIR/share/perl/5.38:$APT_USR_DIR/share/perl/5.38.2"
 fi
 
 # Output directly into dist/
