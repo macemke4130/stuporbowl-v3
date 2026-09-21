@@ -2,10 +2,8 @@
 
 ---
 
-<div id="private-route" data-user-is-authorized="false">
+<div id="private-route">
   <script is:inline>
-    const privateRouteElement = document.querySelector("#private-route");
-
     (async () => {
       const tokenIsValid = await validateToken();
 
@@ -15,9 +13,7 @@
         return;
       }
 
-      privateRouteElement.setAttribute("data-user-is-authorized", "true");
       document.documentElement.setAttribute("data-user-logged-in", "true");
-
       checkPermissions(localStorage.getItem("permissions"));
     })();
   </script>
@@ -25,7 +21,7 @@
 </div>
 
 <style>
-  [data-user-is-authorized="false"] {
+  html[data-user-logged-in=""] {
     display: none;
   }
 </style>

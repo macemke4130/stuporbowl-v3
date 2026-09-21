@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:4321", "https://stupor-v3-95c7b9efa6fc.herokuapp.com", "https://www.stuporbowl.org"];
+const allowedOrigins = ["http://localhost:4321", "http://192.168.86.28:4321", "https://stupor-v3-95c7b9efa6fc.herokuapp.com", "https://www.stuporbowl.org"];
 
 const corsOptions = {
   origin: (origin, callback) => {
