@@ -205,18 +205,13 @@ app.post("/api/images/photo-data", (req, res) => {
       SELECT 
         id,
         filename, 
-        filepath, 
         date_taken, 
         width, 
         height, 
         make, 
         model, 
-        iso, 
-        f_number, 
-        exposure_time, 
         latitude, 
-        longitude, 
-        altitude
+        longitude
       FROM images
       WHERE filename IN (${placeholders})
       ORDER BY date_taken DESC
