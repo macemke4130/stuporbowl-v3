@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "concurrently -k -n astro,express -c cyan,yellow \"astro dev --host\" \"nodemon --watch server.js --watch server/ server.js\"",
-    "build": "bash ./bash.sh && astro build && node generate-rss-manifest.js",
+    "build": "astro build && node generate-rss-manifest.js && bash ./generate-exif-db.sh",
     "heroku-postbuild": "npm run build",
     "preview": "astro preview",
     "start": "node server.js",

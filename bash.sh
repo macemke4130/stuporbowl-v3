@@ -1,1 +1,0 @@
-echo "Bash totally runs on Heroku."
