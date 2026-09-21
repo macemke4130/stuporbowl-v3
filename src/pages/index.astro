@@ -57,6 +57,15 @@ import TextHero from "../components/TextHero.astro";
 </style>
 
 <script is:inline>
+  const getExif = async () => {
+    const request = await api("images/photo-data", "POST", { filenames: ["2026-mace-2.webp", "2026-mace-5.webp"] });
+    console.log(request);
+  };
+
+  getExif();
+</script>
+
+<script is:inline>
   const getPosts = async () => {
     const request = await api("posts");
     return request;

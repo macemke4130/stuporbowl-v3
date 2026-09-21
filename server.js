@@ -4,6 +4,7 @@ import RSS from "rss";
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import Database from "better-sqlite3";
 import { query, prepData, transaction } from "./dbConnect.js";
 import auth from "./auth.js";
 
@@ -166,6 +167,68 @@ app.post("/api/registrations/2027", async (req, res) => {
       status: error.errno || 500,
       data: null,
     });
+  }
+});
+
+function getDbPath() {
+  const paths = [path.resolve(process.cwd(), "dist/images.db"), path.resolve(process.cwd(), "images.db")];
+
+  for (const dbPath of paths) {
+    try {
+      // Test opening the DB; if it exists and is readable, return the path
+      const db = new Database(dbPath, { readonly: true, fileMustExist: true });
+      db.close();
+      return dbPath;
+    } catch (e) {
+      // Path doesn't exist, continue checking next candidate path
+    }
+  }
+
+  throw new Error("images.db file not found.");
+}
+
+// Get exif and gps photo data.
+app.post("/api/images/photo-data", (req, res) => {
+  try {
+    const { filenames } = req.body;
+
+    if (!Array.isArray(filenames) || filenames.length === 0) {
+      return res.status(400).json({ error: "Please provide a non-empty array of filenames." });
+    }
+
+    const dbPath = getDbPath();
+    const db = new Database(dbPath, { readonly: true });
+
+    const placeholders = filenames.map(() => "?").join(",");
+
+    const stmt = db.prepare(`
+      SELECT 
+        id,
+        filename, 
+        filepath, 
+        date_taken, 
+        width, 
+        height, 
+        make, 
+        model, 
+        iso, 
+        f_number, 
+        exposure_time, 
+        latitude, 
+        longitude, 
+        altitude
+      FROM images
+      WHERE filename IN (${placeholders})
+      ORDER BY date_taken DESC
+    `);
+
+    const images = stmt.all(...filenames);
+    db.close();
+
+    res.json({ count: images.length, images });
+  } catch (error) {
+    console.error("Error fetching images by filenames:", error);
+    res.status(500).json({ error: "Failed to retrieve image metadata." });
   }
 });
 
