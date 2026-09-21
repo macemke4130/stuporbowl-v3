@@ -2,6 +2,9 @@
 
 set -e
 
+# Export Apt buildpack's Perl library paths if running on Heroku
+export PERL5LIB="$PERL5LIB:$HOME/.apt/usr/share/perl5:$HOME/.apt/usr/share/perl/5.38.2:$HOME/.apt/usr/share/perl/5.38"
+
 # Output directly into dist/
 DB_FILE="dist/images.db"
 TMP_JSON="temp_exif.json"
