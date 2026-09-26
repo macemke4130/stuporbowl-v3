@@ -43,9 +43,9 @@ const { background } = Astro.props;
         grid-area: 1 / -1;
       }
 
-      .gradient {
+      & .gradient {
         block-size: 50%;
-        background: linear-gradient(transparent, var(--site-background-color));
+        background: linear-gradient(transparent 0%, var(--site-background-color) 99%);
       }
 
       .background {

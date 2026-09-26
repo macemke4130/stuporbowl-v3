@@ -112,13 +112,14 @@ import SiteNavigation from "../components/SiteNavigation.astro";
   :root {
     --site-background-color: #111;
     --site-text-color: #ddd;
-    --site-accent-color: rgb(192, 0, 0);
+    --site-accent-color: #9e0000;
+    --site-accent-color-text: #fff;
     --primary-button-color: #3f3f3f;
 
     --site-max-inline-size: 1200px;
     --standard-spacing: 6rem;
     --round: 0.5rem;
-    --min-button-size: 2.4rem;
+    --min-button-size: 30px;
 
     --header-block-size: 5rem;
     --footer-block-size: 6rem;
@@ -205,11 +206,6 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       inline-size: 2rem;
       block-size: 2rem;
       accent-color: var(--site-accent-color);
-    }
-
-    :where(.radio-group) {
-      display: flex;
-      gap: 2rem;
     }
   }
 

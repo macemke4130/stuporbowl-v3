@@ -20,7 +20,7 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
     <div id="text-container">
       <div id="text-wrapper">
         <p>
-          Please make sure you understand StuporBowl's <a href="/code-of-conduct.html">code of conduct</a> before registering. We have a zero tolerance policy for
+          Please make sure you understand Stupor Bowl's <a href="/code-of-conduct.html">code of conduct</a> before registering. We have a zero tolerance policy for
           assholes.
         </p>
         <p>Race fee is $25. We prefer Venmo but also accept cash on race day. You'll get Venmo information after filling out this form. Race fee includes:</p>
@@ -38,15 +38,15 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
       <form id="registration" aria-labelledby="page-title">
         <label>
           <span>Name</span>
-          <input id="fullname" name="name" type="text" maxlength="32" autocomplete="on" required />
+          <input id="fullname" name="name" type="text" autocomplete="on" required />
         </label>
         <label>
           <span>Email Address</span>
-          <input id="email" name="email" type="email" inputmode="email" maxlength="32" autocomplete="on" required />
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="on" required />
         </label>
         <label>
           <span>Pronouns</span>
-          <input id="pronouns" name="pronouns" type="text" maxlength="32" autocomplete="on" required />
+          <input id="pronouns" name="pronouns" type="text" autocomplete="on" required />
         </label>
         <label>
           <span>Birthday</span>
@@ -55,66 +55,107 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
         <fieldset>
           <legend>Twin Cities Local?</legend>
           <div class="radio-group">
-            <label> <span>Yes</span><input type="radio" name="twin_cities_local" value="true" class="front-end-only" required /> </label>
-            <label> <span>No</span><input type="radio" name="twin_cities_local" value="false" class="front-end-only" /> </label>
+            <label> <span>Yes</span><input type="radio" name="twin_cities_local" value="true" class="" required /> </label>
+            <label> <span>No</span><input type="radio" name="twin_cities_local" value="false" class="" /> </label>
           </div>
           <label id="origin-city-container" class="display-none">
             <span>What city are you from?</span>
             <input name="origin_city" type="text" />
           </label>
         </fieldset>
-        <label>
-          <span class="label-row">
-            <span>Bike Type</span>
-            <span>You can change this later</span>
-          </span>
-          <select name="bike_type" required>
-            <option value="">-- Please Select --</option>
-            <option value="fixed">Fixed Gear</option>
-            <option value="single-speed">Single Speed</option>
-            <option value="geared">Multi Speed</option>
-            <option value="electric">Electric Assist</option>
-          </select>
-        </label>
-        <label>
-          <span class="label-row">
-            <span>Race Type</span>
-            <button id="type-explainer-button" type="button" class="link learn-more">Learn more <span class="sr-only">about race types</span></button>
-          </span>
-          <select id="race" name="race_type" required>
-            <option value="">-- Please Select --</option>
-            <option value="stupor">Stupor</option>
-            <option value="speed">Speed</option>
-          </select>
-        </label>
-        <label>
-          <span>Gender Category</span>
-          <select id="category" name="gender_category" required>
-            <option value="">-- Please Select --</option>
-            <option value="open">Open</option>
-            <option value="women">Women</option>
-            <option value="trans">Trans / Gender Non-Conforming</option>
-          </select>
-        </label>
-        <label>
-          <span>Shirt Size</span>
-          <select id="shirtSize" name="shirt_size" required>
-            <option value="">-- Please Select --</option>
-            <option value="extra-small">Extra Small</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-            <option value="extra-large">Extra Large</option>
-          </select>
-        </label>
-        <label>
-          <span>Payment</span>
-          <select id="payment" name="payment_method" required>
-            <option value="">-- Please Select --</option>
-            <option value="venmo">Venmo today</option>
-            <option value="cash">Cash day of</option>
-          </select>
-        </label>
+        <fieldset>
+          <legend>Bike Type</legend>
+          <div class="radio-group-description">You can change this later. Electric assist bikes are not eligible for podiums.</div>
+          <div class="radio-group">
+            <label>
+              <span>Fixed Gear</span>
+              <input type="radio" name="bike_type" value="fixed" required />
+            </label>
+            <label>
+              <span>Single Speed</span>
+              <input type="radio" name="bike_type" value="single-speed" />
+            </label>
+            <label>
+              <span>Multi Speed</span>
+              <input type="radio" name="bike_type" value="geared" />
+            </label>
+            <label>
+              <span>Electric Assist</span>
+              <input type="radio" name="bike_type" value="electric" />
+            </label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Race Type</legend>
+          <div class="radio-group">
+            <label>
+              <span>Stupor</span>
+              <input type="radio" name="race_type" value="stupor" required />
+            </label>
+            <label>
+              <span>Speed</span>
+              <input type="radio" name="race_type" value="speed" />
+            </label>
+          </div>
+          <div class="field-learn-more-container">
+            <button id="type-explainer-button" type="button" class="learn-more">Learn more <span class="sr-only">about race types</span></button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Gender Category</legend>
+          <div class="radio-group">
+            <label>
+              <span>Trans and <br />Gender Non Conforming</span>
+              <input type="radio" name="gender_category" value="trans" />
+            </label>
+            <label>
+              <span>Women</span>
+              <input type="radio" name="gender_category" value="women" />
+            </label>
+            <label>
+              <span>Open</span>
+              <input type="radio" name="gender_category" value="open" required />
+            </label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Shirt Size</legend>
+          <div class="radio-group">
+            <label>
+              <span>Extra Small</span>
+              <input type="radio" name="shirt_size" value="extra-small" />
+            </label>
+            <label>
+              <span>Small</span>
+              <input type="radio" name="shirt_size" value="small" />
+            </label>
+            <label>
+              <span>Medium</span>
+              <input type="radio" name="shirt_size" value="medium" required />
+            </label>
+            <label>
+              <span>Large</span>
+              <input type="radio" name="shirt_size" value="large" required />
+            </label>
+            <label>
+              <span>Extra Large</span>
+              <input type="radio" name="shirt_size" value="extra-large" required />
+            </label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Payment</legend>
+          <div class="radio-group">
+            <label>
+              <span>Venmo</span>
+              <input type="radio" name="payment_method" value="venmo" />
+            </label>
+            <label>
+              <span>Cash</span>
+              <input type="radio" name="payment_method" value="cash" />
+            </label>
+          </div>
+        </fieldset>
         <label>
           <span>I have read and agree to the terms laid out in the <a href="/articles/waiver">waiver.</a></span>
           <input id="waiver-consent" name="racer_has_signed_waiver" type="checkbox" required />
@@ -210,7 +251,8 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
 
 <style>
   #form-columns {
-    --form-padding: 1.15rem;
+    --form-padding: 1.5rem;
+    --legend-bump: 0.25rem;
 
     @media (min-width: 992px) {
       display: grid;
@@ -218,12 +260,84 @@ import billy from "../../../public/images/lake-billy-16-9-d.webp";
       gap: 2rem;
     }
 
-    label {
+    label:has(:is(input[type="text"], input[type="email"], input[type="date"]):not(fieldset input)) {
       margin-block-end: var(--form-padding);
     }
 
+    #text-container {
+      padding-block-end: 1rem;
+    }
+
+    label,
+    legend {
+      font-size: 1.25rem;
+    }
+
     fieldset {
-      margin-block-end: var(--form-padding);
+      margin-block: var(--form-padding);
+      padding-block: calc(var(--form-padding) * 0.6);
+      padding-inline: calc(var(--form-padding) * 0.6);
+
+      label:has(:is(input[type="text"], input[type="email"], input[type="date"])) {
+        margin-block-start: var(--form-padding);
+      }
+
+      legend {
+        padding-inline: 0.3rem;
+        transform: translateY(calc(var(--legend-bump) * -1));
+        margin-block: calc(var(--legend-bump) * -1);
+      }
+
+      .radio-group-description {
+        margin-block-end: var(--form-padding);
+      }
+
+      .field-learn-more-container {
+        margin-block-start: 1rem;
+        display: flex;
+        justify-content: end;
+
+        .learn-more {
+          font-size: 0.8em;
+        }
+      }
+
+      .radio-group {
+        --radio-group-gap: 1.5rem;
+
+        display: flex;
+        align-items: end;
+        flex-wrap: wrap;
+        column-gap: var(--radio-group-gap);
+        row-gap: calc(var(--radio-group-gap) * 0.9);
+        margin-block-end: calc(var(--radio-group-gap) * 0.3);
+        margin-block-start: calc(var(--radio-group-gap) * -0.1);
+
+        label {
+          display: block;
+          white-space: nowrap;
+          border: 2px solid var(--site-text-color);
+          position: relative;
+          border-radius: var(--round);
+          padding-inline: 1rem;
+          padding-block: 0.5rem;
+          font-size: 1.25rem;
+
+          &:has(> input:checked) {
+            background-color: var(--site-accent-color);
+            color: var(--site-accent-color-text);
+            border-color: transparent;
+            outline: 4px dotted var(--site-text-color);
+            outline-offset: 3px;
+          }
+
+          input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+          }
+        }
+      }
     }
 
     .label-row {
