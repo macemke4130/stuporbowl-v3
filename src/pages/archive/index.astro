@@ -1,14 +1,21 @@
 ---
+import Image from "astro/components/Image.astro";
 import Hero from "../../components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
 import heroBackground from "../../../public/images/year-2026/2026-mace-35.webp";
 
+import imageYear1 from "./year-1998/images/card.jpg";
+import imageYear2 from "./year-1999/images/flyer.jpg";
+
 const years = [
   {
     date: "January 24, 1998",
+    number: 1,
+    image: imageYear1,
   },
   {
     date: "January 30, 1999",
+    image: imageYear2,
   },
   {
     date: "January 29, 2000",
@@ -77,12 +84,12 @@ const years = [
     date: "February 1, 2020",
     number: 23,
   },
-  {
-    date: "February 6, 2021",
-  },
-  {
-    date: "February 12, 2022",
-  },
+  // {
+  //   date: "February 6, 2021",
+  // },
+  // {
+  //   date: "February 12, 2022",
+  // },
   {
     date: "February 11, 2023",
     title: "Stupor Bowl Lite",
@@ -107,14 +114,47 @@ const years = [
   <Hero background={heroBackground}>
     <h1>Stupor Bowl Archive</h1>
   </Hero>
-  <section>
-    <div role="list">
-      <div role="listitem">
-        <div role="group" aria-label="Stupor Bowl 27">
-          <h3>Stupor Bowl 27</h3>
-          <h4>February 7th, 2026</h4>
-        </div>
-      </div>
+  <section aria-label="Archive list" class="page-inline-size">
+    <div id="archive-list" role="list">
+      {
+        years.map((year, index) => {
+          const eventCount = index + 1;
+
+          const hasImage = !year.image;
+
+          return (
+            <div role="listitem">
+              <div role="group" aria-label={`Stupor Bowl ${eventCount}`} class="year-card">
+                <Image src={year.image! || years[0].image} width={350} height={350} alt="" class="card-image" loading="lazy" fetchpriority="auto" />
+                <h2>Stupor Bowl {eventCount}</h2>
+                <date>{year.date}</date>
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   </section>
 </Layout>
+
+<style>
+  #archive-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    .year-card {
+      block-size: 8rem;
+      border: 1px solid #eee;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      text-align: center;
+
+      .card-image {
+        inline-size: 100%;
+        object-fit: cover;
+        block-size: 5rem;
+      }
+    }
+  }
+</style>
