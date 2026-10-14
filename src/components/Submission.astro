@@ -1,0 +1,25 @@
+---
+const {} = Astro.props;
+---
+
+<div class="hero">
+  <div class="background-container">
+    <Image
+      src={background}
+      width={2342}
+      height={1317}
+      widths={[350, 768, 992, 1200, 1440, 2000, 3000]}
+      sizes="(min-width: 992px) 100vw, 992px"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      class="background"
+    />
+    <div class="gradient"></div>
+  </div>
+  <div class="text-container">
+    <slot />
+  </div>
+</div>
+
+<style></style>
