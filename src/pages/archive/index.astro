@@ -6,6 +6,10 @@ import heroBackground from "../../../public/images/year-2026/2026-mace-35.webp";
 
 import imageYear1 from "./year-1998/images/card.jpg";
 import imageYear2 from "./year-1999/images/flyer.jpg";
+import imageYear3 from "./year-2000/images/manifest-front.jpg";
+import imageYear4 from "./year-2001/images/flyer.jpg";
+import imageYear8 from "./year-2005/images/flyer.jpg";
+import imageYear10 from "./year-2007/images/lineup.jpg";
 
 const years = [
   {
@@ -19,9 +23,11 @@ const years = [
   },
   {
     date: "January 29, 2000",
+    image: imageYear3,
   },
   {
     date: "January 27, 2001",
+    image: imageYear4,
   },
   {
     date: "February 2, 2002",
@@ -34,12 +40,14 @@ const years = [
   },
   {
     date: "February 5, 2005",
+    image: imageYear8,
   },
   {
     date: "February 4, 2006",
   },
   {
     date: "February 3, 2007",
+    image: imageYear10,
   },
   {
     date: "February 2, 2008",
@@ -119,15 +127,22 @@ const years = [
       {
         years.map((year, index) => {
           const eventCount = index + 1;
-
-          const hasImage = !year.image;
+          const cardImage = year.image;
 
           return (
             <div role="listitem">
               <div role="group" aria-label={`Stupor Bowl ${eventCount}`} class="year-card">
-                <Image src={year.image! || years[0].image} width={350} height={350} alt="" class="card-image" loading="lazy" fetchpriority="auto" />
-                <h2>Stupor Bowl {eventCount}</h2>
-                <date>{year.date}</date>
+                <div class="image-container">
+                  {cardImage ? (
+                    <Image src={cardImage} width={350} height={350} alt="" class="card-image" loading="lazy" fetchpriority="auto" />
+                  ) : (
+                    <div class="missing-card-image" />
+                  )}
+                </div>
+                <div class="text-container">
+                  <h2>Stupor Bowl {eventCount}</h2>
+                  <date>{year.date}</date>
+                </div>
               </div>
             </div>
           );
@@ -149,11 +164,42 @@ const years = [
       border-radius: 0.5rem;
       overflow: hidden;
       text-align: center;
+      background: var(--card-background-color);
 
-      .card-image {
+      .image-container {
+        --card-block-size: 5rem;
+
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          inset-inline: 0;
+          inset-block-end: 0;
+          block-size: calc(var(--card-block-size) * 0.8);
+          background: linear-gradient(transparent, var(--card-background-color));
+        }
+      }
+
+      .card-image,
+      .missing-card-image {
         inline-size: 100%;
         object-fit: cover;
-        block-size: 5rem;
+        block-size: var(--card-block-size);
+      }
+
+      .missing-card-image {
+        background: radial-gradient(#ddd, #aaa);
+
+        &::before {
+          content: "No image yet!";
+          color: var(--card-background-color);
+          font-size: 80%;
+        }
+      }
+
+      .text-container {
+        transform: translateY(-0.5rem);
       }
     }
   }
