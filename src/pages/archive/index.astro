@@ -2,14 +2,14 @@
 import Image from "astro/components/Image.astro";
 import Hero from "../../components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
-import heroBackground from "../../../public/images/year-2026/2026-mace-35.webp";
+import heroBackground from "./stupor-bowl-27/images/2026-mace-35.webp";
 
-import imageYear1 from "./year-1998/images/card.jpg";
-import imageYear2 from "./year-1999/images/flyer.jpg";
-import imageYear3 from "./year-2000/images/manifest-front.jpg";
-import imageYear4 from "./year-2001/images/flyer.jpg";
-import imageYear8 from "./year-2005/images/flyer.jpg";
-import imageYear10 from "./year-2007/images/lineup.jpg";
+import imageYear1 from "./stupor-bowl-1/images/card.jpg";
+import imageYear2 from "./stupor-bowl-2/images/flyer.jpg";
+import imageYear3 from "./stupor-bowl-3/images/manifest-front.jpg";
+import imageYear4 from "./stupor-bowl-4/images/flyer.jpg";
+import imageYear8 from "./stupor-bowl-8/images/flyer.jpg";
+import imageYear10 from "./stupor-bowl-10/images/lineup.jpg";
 
 const years = [
   {
@@ -207,7 +207,9 @@ const years = [
       }
 
       .text-container {
-        transform: translateY(-0.5rem);
+        @media (min-width: 992px) {
+          transform: translateY(-0.5rem);
+        }
 
         h2 {
           font-size: 1.5rem;
