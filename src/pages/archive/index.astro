@@ -155,20 +155,28 @@ const years = [
 <style>
   #archive-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
 
     .year-card {
-      block-size: 8rem;
-      border: 1px solid #eee;
+      --card-block-size: 12rem;
+
+      block-size: var(--card-block-size);
+      border: 1px solid #eee3;
       border-radius: 0.5rem;
       overflow: hidden;
       text-align: center;
       background: var(--card-background-color);
 
-      .image-container {
-        --card-block-size: 5rem;
+      @media (min-width: 992px) {
+        --card-block-size: 8rem;
+      }
 
+      .image-container {
         position: relative;
 
         &::after {
@@ -185,7 +193,7 @@ const years = [
       .missing-card-image {
         inline-size: 100%;
         object-fit: cover;
-        block-size: var(--card-block-size);
+        block-size: calc(var(--card-block-size) * 0.7);
       }
 
       .missing-card-image {
@@ -200,6 +208,10 @@ const years = [
 
       .text-container {
         transform: translateY(-0.5rem);
+
+        h2 {
+          font-size: 1.5rem;
+        }
       }
     }
   }
