@@ -1,0 +1,27 @@
+---
+type Organizer = {
+  name: string;
+};
+
+const { organizers } = Astro.props;
+---
+
+<section aria-labelledby="organizer-title">
+  <h2 id="organizer-title">Race Organizers</h2>
+  <ul>
+    {
+      organizers.map((organizer: Organizer) => {
+        return <li>{organizer.name}</li>;
+      })
+    }
+  </ul>
+</section>
+<style>
+  #organizer-title {
+    text-align: center;
+  }
+  ul {
+    max-inline-size: var(--article-inline-size);
+    margin-inline: auto;
+  }
+</style>

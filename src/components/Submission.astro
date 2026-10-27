@@ -2,8 +2,46 @@
 const { thing } = Astro.props;
 ---
 
-<div class="submission">
-  <p>This {thing} is incomplete!</p>
+<div class="submission-wrapper">
+  <div class="submission">
+    <h2>This {thing} is incomplete!</h2>
+    <p>You can help by submitting any content whatsoever to the archive.</p>
+    <p>
+      Send an email to <a href="mailto:stuporbowl-mpls@proton.me">stuporbowl-mpls@proton.me</a> with any Photos, Videos, Links, Stories, Race Results, Flyers, Manifests,
+      Spoke Cards, Patches, Clothing, Prizes or more!
+    </p>
+    <a class="button" href="mailto:stuporbowl-mpls@proton.me">Submit Content</a>
+  </div>
 </div>
+<style>
+  .submission-wrapper {
+    padding: 0.5rem;
+  }
 
-<style></style>
+  .submission {
+    padding: 2rem;
+    margin-block: 2rem;
+    border-radius: var(--round);
+    align-content: center;
+    padding-inline: 1rem;
+    max-inline-size: var(--article-inline-size);
+    margin-inline: auto;
+    text-align: center;
+    text-wrap: balance;
+    background-color: var(--primary-button-color);
+    color: #fff;
+
+    p {
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-block-end: 0.25rem;
+    }
+
+    .button {
+      margin-block-end: 0;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+
+---
+
+<article class="article-inline-size">
+  <slot />
+</article>
+<style>
+  .article-inline-size {
+    max-inline-size: var(--article-inline-size);
+    margin-inline: auto;
+
+    h1:not([class]) {
+      padding-block: 5rem;
+    }
+  }
+</style>

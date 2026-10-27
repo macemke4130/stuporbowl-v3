@@ -1,5 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import Submission from "../../../components/Submission.astro";
+import Hero from "../../../components/Hero.astro";
 
 const sponsors = [
   "Fulton Brewing",
@@ -61,6 +63,16 @@ const organizers = [
     name: "Tony Duran",
   },
 ];
+
+import poster from "./images/poster.png";
+import Organizers from "../../../components/Organizers.astro";
 ---
 
-<Layout />
+<Layout>
+  <Hero background={poster}>
+    <h1>Stupor Bowl 23</h1>
+    <time>February 1st, 2020</time>
+  </Hero>
+  <Organizers organizers={organizers} />
+  <Submission thing={"article"} />
+</Layout>

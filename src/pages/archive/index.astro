@@ -92,12 +92,6 @@ const years = [
     date: "February 1, 2020",
     number: 23,
   },
-  // {
-  //   date: "February 6, 2021",
-  // },
-  // {
-  //   date: "February 12, 2022",
-  // },
   {
     date: "February 11, 2023",
     title: "Stupor Bowl Lite",
@@ -131,19 +125,21 @@ const years = [
 
           return (
             <div role="listitem">
-              <div role="group" aria-label={`Stupor Bowl ${eventCount}`} class="year-card">
-                <div class="image-container">
-                  {cardImage ? (
-                    <Image src={cardImage} width={350} height={350} alt="" class="card-image" loading="lazy" fetchpriority="auto" />
-                  ) : (
-                    <div class="missing-card-image" />
-                  )}
+              <a href={`./archive/stupor-bowl-${eventCount}`} class="year-link">
+                <div role="group" aria-label={`Stupor Bowl ${eventCount}`} class="year-card">
+                  <div class="image-container">
+                    {cardImage ? (
+                      <Image src={cardImage} width={350} height={350} alt="" class="card-image" loading="lazy" fetchpriority="auto" />
+                    ) : (
+                      <div class="missing-card-image" />
+                    )}
+                  </div>
+                  <div class="text-container">
+                    <h2>Stupor Bowl {eventCount}</h2>
+                    <date>{year.date}</date>
+                  </div>
                 </div>
-                <div class="text-container">
-                  <h2>Stupor Bowl {eventCount}</h2>
-                  <date>{year.date}</date>
-                </div>
-              </div>
+              </a>
             </div>
           );
         })
@@ -162,8 +158,14 @@ const years = [
       grid-template-columns: repeat(3, 1fr);
     }
 
+    .year-link {
+      text-decoration: none;
+    }
+
     .year-card {
       --card-block-size: 12rem;
+      display: grid;
+      place-items: center;
 
       block-size: var(--card-block-size);
       border: 1px solid #eee3;
@@ -176,8 +178,14 @@ const years = [
         --card-block-size: 8rem;
       }
 
+      & > * {
+        grid-area: 1 / -1;
+      }
+
       .image-container {
         position: relative;
+        inline-size: 100%;
+        align-self: start;
 
         &::after {
           content: "";
@@ -207,9 +215,11 @@ const years = [
       }
 
       .text-container {
-        @media (min-width: 992px) {
-          transform: translateY(-0.5rem);
-        }
+        align-self: end;
+        z-index: 1;
+        padding-block-end: 0.5rem;
+        -webkit-text-stroke: 1px black;
+        paint-order: stroke;
 
         h2 {
           font-size: 1.5rem;

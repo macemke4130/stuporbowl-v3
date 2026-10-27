@@ -1,4 +1,7 @@
 ---
+import Layout from "../../../layouts/Layout.astro";
+import Submission from "../../../components/Submission.astro";
+
 const raceResults = [
   { place: 1, name: "Mark - MBMA" },
   {
@@ -95,3 +98,7 @@ const raceResults = [
   },
 ];
 ---
+
+<Layout>
+  <Submission thing={"article"} />
+</Layout>

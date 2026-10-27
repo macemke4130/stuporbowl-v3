@@ -119,6 +119,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     --card-background-color: var(--site-background-color);
 
     --site-max-inline-size: 1200px;
+    --article-inline-size: 60ch;
     --standard-spacing: 6rem;
     --round: 0.5rem;
     --min-button-size: 30px;
@@ -175,7 +176,8 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     :where(h1, .h1, h2, h3, h4, h5, h6) {
       font-weight: inherit;
       font-size: inherit;
-      margin-block: 0;
+      margin-block-start: 0;
+      margin-block-end: 0.5rem;
     }
 
     :where(ul, ol, p) + :where(h1, .h1, h2, h3, h4, h5, h6) {
@@ -183,7 +185,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
     }
 
     :where(h1, .h1, h2, h3, h4, h5, h6):has(+ :where(p)) {
-      margin-block-end: 0;
+      margin-block-end: 0.5rem;
     }
 
     :where(html, body) {
@@ -261,19 +263,14 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       }
     }
 
-    :where(section):has(> :where(h2, h3, h4, h5, h6)) {
-      margin-block-start: 5rem;
-
-      > :where(h2, h3, h4, h5, h6) {
-        font-size: 3rem;
-        text-align: center;
-        margin-block-end: 1.2rem;
-      }
-    }
-
     :where(h1) {
       text-align: center;
       font-size: 3rem;
+    }
+
+    :where(h2) {
+      text-align: center;
+      font-size: 2rem;
     }
 
     :where(main > h1) {
@@ -294,11 +291,6 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       margin-block-end: 0.5rem;
     }
 
-    :where(main > article) {
-      margin: 0 auto;
-      max-inline-size: 58rem;
-    }
-
     :where(p) {
       text-wrap: pretty;
       margin-block-start: 0;
@@ -308,20 +300,10 @@ import SiteNavigation from "../components/SiteNavigation.astro";
       margin-block-end: 0;
     }
 
-    :where(main > article p) {
-      text-align: justify;
-      font-size: 2.2rem;
-      line-height: 1.25;
-    }
-
     .page-inline-size {
       padding-inline: 0.5rem;
       margin-inline: auto;
       max-inline-size: var(--site-max-inline-size);
-
-      @media (min-width: 992px) {
-        padding-inline: 0;
-      }
     }
 
     :where(button) {
@@ -463,6 +445,7 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 
     #site-footer {
       align-content: center;
+      margin-block-start: 1rem;
       border-block-start: 1px solid var(--primary-button-color);
       text-align: center;
       block-size: var(--footer-block-size);
